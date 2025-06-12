@@ -133,12 +133,12 @@ function ModalAuth({
           </form>
         </div>
       </ModalBody>
-      <ModalFooter>
+      {/* <ModalFooter>
         <Button onClick={() => setOpenModal("")}>I accept</Button>
         <Button color="alternative" onClick={() => setOpenModal("")}>
           Decline
         </Button>
-      </ModalFooter>
+      </ModalFooter> */}
     </Modal>
   );
 }
