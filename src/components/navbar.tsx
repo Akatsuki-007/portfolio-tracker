@@ -111,6 +111,7 @@ function Navbar() {
             <Button
               size="sm"
               className="cursor-pointer bg-[#3861FB] hover:bg-[#3861FB]/95 active:bg-[#1145d3] font-semibold font-sans focus:ring-0 rounded-lg"
+              onClick={() => setOpenModal("login")}
             >
               Log In
             </Button>
@@ -118,6 +119,7 @@ function Navbar() {
               size="sm"
               className="cursor-pointer hover:bg-gray-50/25 box-border hover:border-[#3861FB] border-2 font-semibold font-sans focus:ring-0 text-black hover:text-black active:text-[#3861FB] rounded-lg"
               outline
+              onClick={() => setOpenModal("signup")}
             >
               Sign Up
             </Button>
