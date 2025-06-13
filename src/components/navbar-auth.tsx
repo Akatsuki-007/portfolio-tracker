@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Modal,
   modalTheme,
@@ -10,6 +10,12 @@ import {
 } from "flowbite-react";
 import Image from "next/image";
 import { X, EyeOff, Eye } from "lucide-react";
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+} from "firebase/auth";
+import { auth } from "@/config/firebase";
 
 function ModalAuth({
   openModal,
@@ -20,10 +26,89 @@ function ModalAuth({
 }) {
   const [showPassword, setShowPassword] = useState(false);
   const [form, setForm] = useState({
-    email: "",
-    password: "",
+    login: {
+      email: "",
+      password: "",
+    },
+    signup: {
+      email: "",
+      password: "",
+    },
   });
-  const [enable, setEnable] = useState<boolean>(false);
+  const [errorForm, setErrorForm] = useState({
+    login: {
+      email: "",
+      password: "",
+    },
+    signup: {
+      email: "",
+      password: "",
+    },
+  });
+
+  useEffect(() => {
+    console.log(form, errorForm);
+  }, [form, errorForm]);
+
+  const handleAuth = async () => {
+    try {
+      setErrorForm({
+        login: {
+          email: "",
+          password: "",
+        },
+        signup: {
+          email: "",
+          password: "",
+        },
+      });
+
+      const errors = {
+        email:
+          openModal === "login"
+            ? form.login.email === ""
+              ? "Email is required"
+              : ""
+            : form.signup.email === ""
+            ? "Email is required"
+            : "",
+        password:
+          openModal === "login"
+            ? form.login.password.length <= 8
+              ? "Password should contain both letters and numbers, with minimum length of 8 characters"
+              : ""
+            : form.signup.password.length <= 8
+            ? "Password should contain both letters and numbers, with minimum length of 8 characters"
+            : "",
+      };
+
+      setErrorForm({
+        ...errorForm,
+        [openModal]: errors,
+      });
+
+      // Check if there are any errors and return early
+      if (errors.email || errors.password) {
+        return;
+      }
+
+      if (openModal === "login") {
+        await signInWithEmailAndPassword(
+          auth,
+          form.login.email,
+          form.login.password
+        );
+      } else {
+        await createUserWithEmailAndPassword(
+          auth,
+          form.signup.email,
+          form.signup.password
+        );
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <Modal
@@ -77,7 +162,7 @@ function ModalAuth({
                   height={50}
                 />
                 Continue with Google
-              </Button>{" "}
+              </Button>
               <div className="flex justify-center items-center gap-2">
                 <div className="w-full h-px bg-gray-200"></div>
                 <h1 className="text-nowrap font-semibold font-sans uppercase">
@@ -87,7 +172,13 @@ function ModalAuth({
               </div>
             </>
           )}
-          <form className="flex max-w-md flex-col gap-4">
+          <form
+            onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
+              e.preventDefault();
+              handleAuth();
+            }}
+            className="flex max-w-md flex-col gap-4"
+          >
             <div>
               <div className="mb-2 block">
                 <Label className="font-semibold font-sans" htmlFor="email1">
@@ -99,7 +190,39 @@ function ModalAuth({
                 type="email"
                 placeholder="name@flowbite.com"
                 required
+                color={
+                  openModal === "login"
+                    ? errorForm.login.email
+                      ? "failure"
+                      : ""
+                    : errorForm.signup.email
+                    ? "failure"
+                    : ""
+                }
+                value={
+                  openModal === "login" ? form.login.email : form.signup.email
+                }
+                onChange={(e) =>
+                  setForm({
+                    ...form,
+                    [openModal]: {
+                      ...(openModal === "login" ? form.login : form.signup),
+                      email: e.target.value,
+                    },
+                  })
+                }
               />
+              {/* Error message for email */}
+              {openModal === "login" && errorForm.login.email && (
+                <p className="text-red-500 text-xs mt-1">
+                  {errorForm.login.email}
+                </p>
+              )}
+              {openModal === "signup" && errorForm.signup.email && (
+                <p className="text-red-500 text-xs mt-1">
+                  {errorForm.signup.email}
+                </p>
+              )}
             </div>
             <div>
               <div className="mb-2 block">
@@ -113,6 +236,25 @@ function ModalAuth({
                   id="password1"
                   type={showPassword ? "text" : "password"}
                   required
+                  color={
+                    openModal === "login"
+                      ? errorForm.login.password && "failure"
+                      : errorForm.signup.password && "failure"
+                  }
+                  value={
+                    openModal === "login"
+                      ? form.login.password
+                      : form.signup.password
+                  }
+                  onChange={(e) =>
+                    setForm({
+                      ...form,
+                      [openModal]: {
+                        ...(openModal === "login" ? form.login : form.signup),
+                        password: e.target.value,
+                      },
+                    })
+                  }
                   className="w-full"
                 />
                 <button
@@ -127,8 +269,27 @@ function ModalAuth({
                   )}
                 </button>
               </div>
+              {/* Error message for password */}
+              {openModal === "login" && errorForm.login.password && (
+                <p className="text-red-500 text-xs mt-1">
+                  {errorForm.login.password}
+                </p>
+              )}
+              {openModal === "signup" && errorForm.signup.password && (
+                <p className="text-red-500 text-xs mt-1">
+                  {errorForm.signup.password}
+                </p>
+              )}
             </div>
-            <Button size="sm" type="submit">
+            <Button
+              size="sm"
+              type="submit"
+              disabled={
+                openModal === "login"
+                  ? form.login.email === "" || form.login.password === ""
+                  : form.signup.email === "" || form.signup.password === ""
+              }
+            >
               {openModal === "login" ? "Log In" : "Create an account"}
             </Button>
           </form>
