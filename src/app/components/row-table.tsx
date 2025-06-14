@@ -26,7 +26,7 @@ export default function RowTable({
       <td className="p-2.5">
         <MdStarBorder />
       </td>
-      <td className="p-2.5">{index}</td>
+      <td className="p-2.5">{index+1}</td>
       <td className="px-4 py-4">
         <div>
           <a href="#">
