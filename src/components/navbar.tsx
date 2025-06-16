@@ -16,6 +16,7 @@ import {
 } from "flowbite-react";
 import Image from "next/image";
 import Logo from "../../public/logo-3.png";
+import IconProfile from "../../public/user.png";
 import ModalAuth from "./modal-auth";
 import { signOut } from "firebase/auth";
 import { auth } from "@/config/firebase";
@@ -25,7 +26,7 @@ import { useAppSelector } from "@/lib/hooks";
 function Navbar() {
   const [open, setOpen] = useState<boolean>(false);
   const [openModal, setOpenModal] = useState<string>("");
-  const [openPopup, setOpenPopup] = useState<boolean>(false);
+  const [openPopup, setOpenPopup] = useState<string>("");
 
   const { user } = useAppSelector((state) => state.auth);
 
@@ -73,7 +74,7 @@ function Navbar() {
           </div>
           <NavbarToggle />
           <div className="hidden md:flex items-center gap-4">
-            {!user && (
+            {user.uid === "" && (
               <Button
                 className="cursor-pointer bg-[#3861FB] hover:bg-[#3861FB]/95 active:bg-[#1145d3] font-semibold font-sans focus:ring-0 rounded-lg"
                 onClick={() => setOpenModal("login")}
@@ -89,9 +90,9 @@ function Navbar() {
               open={open}
               onOpenChange={setOpen}
               content={
-                <div className="flex w-72 flex-col gap-4 p-4 text-sm text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 rounded-lg">
+                <div className="flex w-60 flex-col gap-4 p-4 text-sm text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 rounded-lg">
                   <div className="flex gap-2">
-                    {!user ? (
+                    {user.uid === "" ? (
                       <>
                         <Button
                           size="sm"
@@ -127,7 +128,7 @@ function Navbar() {
                   height={40}
                   width={40}
                   className="rounded-full w-full h-full object-cover border-2 border-[#3861FB]"
-                  src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8cHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D"
+                  src={user.photoURL !== "" ? user.photoURL : IconProfile}
                   alt="Avatar"
                 />
               </Button>
@@ -137,7 +138,7 @@ function Navbar() {
             <NavbarLink as={Link} href="/">
               Cryptocurrency
             </NavbarLink>
-            {!user ? (
+            {user.uid === "" ? (
               <>
                 <Button
                   size="sm"
@@ -168,7 +169,7 @@ function Navbar() {
         </FlowbiteNavbar>
       </div>
 
-      {!user && (
+      {user.uid === "" && (
         <ModalAuth
           openModal={openModal}
           setOpenModal={setOpenModal}
@@ -177,10 +178,10 @@ function Navbar() {
       )}
 
       <Modal
-        show={openPopup}
+        show={openPopup !== ""}
         size="md"
         popup
-        onClose={() => setOpenPopup(false)}
+        onClose={() => setOpenPopup("")}
       >
         <ModalHeader />
         <ModalBody>
@@ -201,13 +202,12 @@ function Navbar() {
               You successfully logged in!
             </h1>
             <p className="text-sm font-normal text-gray-500 dark:text-gray-400">
-              In order to log in CoinMarketCap on mobile site/App, please set
-              your email and password in ‘Account Setting’ page.
+              {openPopup}
             </p>
             <Button
               color="blue"
-              className="w-full mt-8"
-              onClick={() => setOpenPopup(false)}
+              className="cursor-pointer w-full mt-8"
+              onClick={() => setOpenPopup("")}
             >
               Yes, I'm sure
             </Button>

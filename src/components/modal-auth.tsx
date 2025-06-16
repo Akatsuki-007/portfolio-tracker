@@ -12,8 +12,9 @@ import { X, EyeOff, Eye } from "lucide-react";
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
+  signInWithPopup,
 } from "firebase/auth";
-import { auth } from "@/config/firebase";
+import { auth, provider } from "@/config/firebase";
 
 function ModalAuth({
   openModal,
@@ -22,9 +23,10 @@ function ModalAuth({
 }: {
   openModal: string;
   setOpenModal: React.Dispatch<React.SetStateAction<string>>;
-  setOpenPopup: React.Dispatch<React.SetStateAction<boolean>>;
+  setOpenPopup: React.Dispatch<React.SetStateAction<string>>;
 }) {
-  const [showPassword, setShowPassword] = useState(false);
+  const [showPasswordLogin, setShowPasswordLogin] = useState(false);
+  const [showPasswordSignup, setShowPasswordSignup] = useState(false);
   const [form, setForm] = useState({
     login: {
       email: "",
@@ -35,7 +37,17 @@ function ModalAuth({
       password: "",
     },
   });
-  const [errorForm, setErrorForm] = useState({
+  const [errorForm, setErrorForm] = useState<{
+    login: {
+      email: string;
+      password: string;
+    };
+    signup: {
+      email: string;
+      password: string;
+    };
+    google: string;
+  }>({
     login: {
       email: "",
       password: "",
@@ -44,11 +56,8 @@ function ModalAuth({
       email: "",
       password: "",
     },
+    google: "",
   });
-
-  useEffect(() => {
-    console.log(form, errorForm);
-  }, [form, errorForm]);
 
   const handleAuth = async () => {
     try {
@@ -61,36 +70,8 @@ function ModalAuth({
           email: "",
           password: "",
         },
+        google: "",
       });
-
-      const errors = {
-        email:
-          openModal === "login"
-            ? form.login.email === ""
-              ? "Email is required"
-              : ""
-            : form.signup.email === ""
-            ? "Email is required"
-            : "",
-        password:
-          openModal === "login"
-            ? form.login.password.length <= 8
-              ? "Password should contain both letters and numbers, with minimum length of 8 characters"
-              : ""
-            : form.signup.password.length <= 8
-            ? "Password should contain both letters and numbers, with minimum length of 8 characters"
-            : "",
-      };
-
-      setErrorForm({
-        ...errorForm,
-        [openModal]: errors,
-      });
-
-      // Check if there are any errors and return early
-      if (errors.email || errors.password) {
-        return;
-      }
 
       if (openModal === "login") {
         await signInWithEmailAndPassword(
@@ -100,7 +81,9 @@ function ModalAuth({
         ).then(() => {
           Promise.resolve().then(() => {
             setTimeout(() => {
-              setOpenPopup(true);
+              setOpenPopup(
+                "Account created successfully! You can now log in with your email and password."
+              );
             }, 1000);
           });
         });
@@ -112,13 +95,98 @@ function ModalAuth({
         ).then(() => {
           Promise.resolve().then(() => {
             setTimeout(() => {
-              setOpenPopup(true);
+              setOpenPopup(
+                "Account created successfully! You can now log in with your email and password."
+              );
             }, 1000);
           });
         });
       }
     } catch (error) {
-      console.log(error);
+      if (error && typeof error === "object" && "code" in error) {
+        if (error.code === "auth/invalid-credential") {
+          setErrorForm((prev) => ({
+            ...prev,
+            [openModal]: {
+              ...prev[openModal as "login" | "signup"],
+              password: "Invalid email or password",
+            },
+          }));
+        } else if (error.code === "auth/weak-password") {
+          setErrorForm((prev) => ({
+            ...prev,
+            [openModal]: {
+              ...prev[openModal as "login" | "signup"],
+              password: "Password should be at least 6 characters!",
+            },
+          }));
+        } else if (error.code === "auth/email-already-in-use") {
+          setErrorForm((prev) => ({
+            ...prev,
+            [openModal]: {
+              ...prev[openModal as "login" | "signup"],
+              email: "Email already in use / already registered",
+            },
+          }));
+        } else if (error.code === "auth/invalid-email") {
+          setErrorForm((prev) => ({
+            ...prev,
+            [openModal]: {
+              ...prev[openModal as "login" | "signup"],
+              email: "Invalid email format",
+            },
+          }));
+        } else if (error.code === "auth/too-many-requests") {
+          setErrorForm((prev) => ({
+            ...prev,
+            [openModal]: {
+              ...prev[openModal as "login" | "signup"],
+              email: "Too many requests, please try again later",
+            },
+          }));
+        } else {
+          setErrorForm((prev) => ({
+            ...prev,
+            [openModal]: {
+              ...prev[openModal as "login" | "signup"],
+              email: "An error occurred, please try again",
+            },
+          }));
+          console.error("Error during authentication:", error);
+        }
+      }
+    }
+  };
+
+  const handleOAuth = async () => {
+    try {
+      await signInWithPopup(auth, provider).then(() => {
+        Promise.resolve().then(() => {
+          setTimeout(() => {
+            setOpenPopup("Successfully logged in with Google!");
+          }, 1000);
+        });
+      });
+    } catch (error) {
+      if (error && typeof error === "object" && "code" in error) {
+        if (error.code === "auth/popup-closed-by-user") {
+          setErrorForm({
+            ...errorForm,
+            google: "Popup closed by user.",
+          });
+        } else if (error.code === "auth/cancelled-popup-request") {
+          setErrorForm({
+            ...errorForm,
+            google: "Popup request cancelled.",
+          });
+        } else {
+          setErrorForm({
+            ...errorForm,
+            google: "An error occurred, please try again.",
+          });
+          console.error("Error during OAuth authentication:", error);
+        }
+      }
     }
   };
 
@@ -159,6 +227,7 @@ function ModalAuth({
                 size="sm"
                 className="cursor-pointer w-full flex items-center gap-2 font-semibold font-sans focus:ring-0 rounded-lg"
                 outline
+                onClick={handleOAuth}
               >
                 <Image
                   src="https://www.gstatic.com/marketing-cms/assets/images/d5/dc/cfe9ce8b4425b410b49b7f2dd3f3/g.webp=s96-fcrop64=1,00000000ffffffff-rw"
@@ -240,7 +309,15 @@ function ModalAuth({
                 <TextInput
                   theme={{ ...textInputTheme }}
                   id="password1"
-                  type={showPassword ? "text" : "password"}
+                  type={
+                    openModal === "login"
+                      ? showPasswordLogin
+                        ? "text"
+                        : "password"
+                      : showPasswordSignup
+                      ? "text"
+                      : "password"
+                  }
                   required
                   color={
                     openModal === "login"
@@ -266,12 +343,22 @@ function ModalAuth({
                 <button
                   type="button"
                   className="cursor-pointer absolute right-3 inset-y-0 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-                  onClick={() => setShowPassword(!showPassword)}
+                  onClick={() =>
+                    openModal === "login"
+                      ? setShowPasswordLogin((prev) => !prev)
+                      : setShowPasswordSignup((prev) => !prev)
+                  }
                 >
-                  {showPassword ? (
-                    <EyeOff className="text-gray-400 h-5 w-5" />
-                  ) : (
+                  {openModal === "login" ? (
+                    showPasswordLogin ? (
+                      <Eye className="text-gray-400 h-5 w-5" />
+                    ) : (
+                      <EyeOff className="text-gray-400 h-5 w-5" />
+                    )
+                  ) : showPasswordSignup ? (
                     <Eye className="text-gray-400 h-5 w-5" />
+                  ) : (
+                    <EyeOff className="text-gray-400 h-5 w-5" />
                   )}
                 </button>
               </div>
@@ -310,6 +397,7 @@ function ModalAuth({
                 size="sm"
                 className="cursor-pointer w-full flex items-center gap-2 font-semibold font-sans focus:ring-0 rounded-lg"
                 outline
+                onClick={handleOAuth}
               >
                 <Image
                   src="https://www.gstatic.com/marketing-cms/assets/images/d5/dc/cfe9ce8b4425b410b49b7f2dd3f3/g.webp=s96-fcrop64=1,00000000ffffffff-rw"

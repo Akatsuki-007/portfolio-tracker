@@ -4,7 +4,13 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 export const authSlice = createSlice({
   name: "auth",
   initialState: {
-    user: null,
+    user: {
+      uid: "",
+      email: "",
+      photoURL: "",
+    },
+  } as {
+    user: User;
   },
   reducers: {
     setUser: (state, action: PayloadAction<any>) => {

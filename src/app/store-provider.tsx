@@ -23,15 +23,20 @@ export default function StoreProvider({
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (storeRef.current) {
         if (user) {
-          const userData = {
+          const userData: User = {
             uid: user.uid,
-            email: user.email,
-            photoURL: user.photoURL,
-            // tambah sesuai kebutuhan
+            email: user.email ? user.email : "",
+            photoURL: user.photoURL ? user.photoURL : "",
           };
           storeRef.current.dispatch(setUser(userData));
         } else {
-          storeRef.current.dispatch(setUser(null));
+          storeRef.current.dispatch(
+            setUser({
+              uid: "",
+              email: "",
+              photoURL: "",
+            })
+          );
         }
       }
     });
