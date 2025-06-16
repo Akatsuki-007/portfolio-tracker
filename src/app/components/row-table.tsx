@@ -9,30 +9,31 @@ export default function RowTable({
   crypto: any;
   index: number;
 }) {
+
   const [info, setInfo] = useState<any>([]);
-  useEffect(() => {
+  const [price, setPrice] = useState<any>([]);
+
+    useEffect(() => {
       const fetchInfo = async () => {
-        const res = await fetch(
-          `/api/info?symbol=${crypto.symbol}`,
-        );
-        const data = await res.json();
-        setInfo(data.data);
+        try {
+          const [infoRes, priceRes] = await Promise.all([
+            fetch(`/api/info?symbol=${crypto.symbol}`),
+            fetch(`/api/price?symbol=${crypto.symbol}`),
+          ])
+          const [infoData, priceData] = await Promise.all([
+            infoRes.json(),
+            priceRes.json(),
+          ]);
+          console.log('infoRes', infoData.data);
+          setInfo(infoData.data);
+          console.log('priceRes', priceData.data);
+          setPrice(priceData.data);
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
       };
       fetchInfo();
-    }, []);
-
-  const [price, setPrice] = useState<any>([]);
-  useEffect(() => {
-      const fetchPrice = async () => {
-        const res = await fetch(
-          `/api/price?symbol=BTC`,
-        );
-        const data = await res.json();
-        console.log(data.data);
-        setPrice(data.data);
-      };
-      fetchPrice();
-    }, []);
+    }, [crypto.symbol]);
   return (
     <tr className={`${index % 2 === 0 ? "bg-black" : "bg-gray-700"}`}>
       <td className="p-2.5">
@@ -45,7 +46,7 @@ export default function RowTable({
             <span className="flex gap-3 items-center">
               <img
                 className="w-6 h-auto"
-                src={info[crypto.symbol]?.logo}
+                src={info && info[crypto.symbol]?.logo}
                 alt="Bitcoin"
               />
               <p className="font-semibold">
@@ -62,7 +63,12 @@ export default function RowTable({
           </button>
         </div>
       </td>
-      <td className="p-2.5">{price[crypto.symbol]?.quote?.USD.price}</td>
+      <td className="p-2.5">{
+      price?.[crypto.symbol]?.[0]?.quote?.USD.price
+      ? price?.[crypto.symbol]?.[0]?.quote?.USD.price > 0.001 
+        ? `$${Number(price?.[crypto.symbol]?.[0]?.quote?.USD.price.toFixed(2)).toLocaleString()}` 
+        : `$${Number(price?.[crypto.symbol]?.[0]?.quote?.USD.price).toPrecision(4)}`
+      : 'N/A' }</td>
       <td className="p-2.5">+0.5%</td>
       <td className="p-2.5">+3.2%</td>
       <td className="p-2.5">+3.2%</td>
