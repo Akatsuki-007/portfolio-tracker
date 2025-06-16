@@ -10,14 +10,35 @@ import {
   Button,
   Popover,
   popoverTheme,
+  Modal,
+  ModalHeader,
+  ModalBody,
 } from "flowbite-react";
 import Image from "next/image";
 import Logo from "../../public/logo-3.png";
-import ModalAuth from "./navbar-auth";
+import ModalAuth from "./modal-auth";
+import { signOut } from "firebase/auth";
+import { auth } from "@/config/firebase";
+
+import { useAppSelector } from "@/lib/hooks";
 
 function Navbar() {
   const [open, setOpen] = useState<boolean>(false);
   const [openModal, setOpenModal] = useState<string>("");
+  const [openPopup, setOpenPopup] = useState<boolean>(false);
+
+  const { user } = useAppSelector((state) => state.auth);
+
+  const handleSignOut = async () => {
+    try {
+      await signOut(auth);
+    } catch (error) {
+      console.error("Error signing out:", error);
+    } finally {
+      setOpen(false);
+      setOpenModal("");
+    }
+  };
 
   return (
     <>
@@ -52,12 +73,14 @@ function Navbar() {
           </div>
           <NavbarToggle />
           <div className="hidden md:flex items-center gap-4">
-            <Button
-              className="cursor-pointer bg-[#3861FB] hover:bg-[#3861FB]/95 active:bg-[#1145d3] font-semibold font-sans focus:ring-0 rounded-lg"
-              onClick={() => setOpenModal("login")}
-            >
-              Log In
-            </Button>
+            {!user && (
+              <Button
+                className="cursor-pointer bg-[#3861FB] hover:bg-[#3861FB]/95 active:bg-[#1145d3] font-semibold font-sans focus:ring-0 rounded-lg"
+                onClick={() => setOpenModal("login")}
+              >
+                Log In
+              </Button>
+            )}
             <Popover
               theme={{
                 ...popoverTheme,
@@ -68,27 +91,33 @@ function Navbar() {
               content={
                 <div className="flex w-72 flex-col gap-4 p-4 text-sm text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 rounded-lg">
                   <div className="flex gap-2">
-                    <Button
-                      size="sm"
-                      className="cursor-pointer bg-[#3861FB] hover:bg-[#3861FB]/95 active:bg-[#1145d3] font-semibold font-sans focus:ring-0 rounded-lg"
-                      onClick={() => setOpenModal("login")}
-                    >
-                      Log In
-                    </Button>
-                    <Button
-                      size="sm"
-                      className="cursor-pointer hover:bg-gray-50/25 box-border hover:border-[#3861FB] border-2 font-semibold font-sans focus:ring-0 text-black hover:text-black active:text-[#3861FB] rounded-lg"
-                      outline
-                      onClick={() => setOpenModal("signup")}
-                    >
-                      Sign Up
-                    </Button>
-                    {/* <Button
-                    size="sm"
-                    className="cursor-pointer w-full bg-red-600 dark:bg-red-600 hover:bg-red-600/95 dark:hover:bg-red-600/95 active:bg-red-700 dark:active:bg-red-700 font-semibold font-sans focus:ring-0 rounded-lg"
-                  >
-                    Log Out
-                  </Button> */}
+                    {!user ? (
+                      <>
+                        <Button
+                          size="sm"
+                          className="cursor-pointer bg-[#3861FB] hover:bg-[#3861FB]/95 active:bg-[#1145d3] font-semibold font-sans focus:ring-0 rounded-lg"
+                          onClick={() => setOpenModal("login")}
+                        >
+                          Log In
+                        </Button>
+                        <Button
+                          size="sm"
+                          className="cursor-pointer hover:bg-gray-50/25 box-border hover:border-[#3861FB] border-2 font-semibold font-sans focus:ring-0 text-black hover:text-black active:text-[#3861FB] rounded-lg"
+                          outline
+                          onClick={() => setOpenModal("signup")}
+                        >
+                          Sign Up
+                        </Button>
+                      </>
+                    ) : (
+                      <Button
+                        size="sm"
+                        className="cursor-pointer w-full bg-red-600 dark:bg-red-600 hover:bg-red-600/95 dark:hover:bg-red-600/95 active:bg-red-700 dark:active:bg-red-700 font-semibold font-sans focus:ring-0 rounded-lg"
+                        onClick={handleSignOut}
+                      >
+                        Log Out
+                      </Button>
+                    )}
                   </div>
                 </div>
               }
@@ -108,26 +137,83 @@ function Navbar() {
             <NavbarLink as={Link} href="/">
               Cryptocurrency
             </NavbarLink>
-            <Button
-              size="sm"
-              className="cursor-pointer bg-[#3861FB] hover:bg-[#3861FB]/95 active:bg-[#1145d3] font-semibold font-sans focus:ring-0 rounded-lg"
-              onClick={() => setOpenModal("login")}
-            >
-              Log In
-            </Button>
-            <Button
-              size="sm"
-              className="cursor-pointer hover:bg-gray-50/25 box-border hover:border-[#3861FB] border-2 font-semibold font-sans focus:ring-0 text-black hover:text-black active:text-[#3861FB] rounded-lg"
-              outline
-              onClick={() => setOpenModal("signup")}
-            >
-              Sign Up
-            </Button>
+            {!user ? (
+              <>
+                <Button
+                  size="sm"
+                  className="cursor-pointer bg-[#3861FB] hover:bg-[#3861FB]/95 active:bg-[#1145d3] font-semibold font-sans focus:ring-0 rounded-lg"
+                  onClick={() => setOpenModal("login")}
+                >
+                  Log In
+                </Button>
+                <Button
+                  size="sm"
+                  className="cursor-pointer hover:bg-gray-50/25 box-border hover:border-[#3861FB] border-2 font-semibold font-sans focus:ring-0 text-black hover:text-black active:text-[#3861FB] rounded-lg"
+                  outline
+                  onClick={() => setOpenModal("signup")}
+                >
+                  Sign Up
+                </Button>
+              </>
+            ) : (
+              <Button
+                size="sm"
+                className="cursor-pointer w-full bg-red-600 dark:bg-red-600 hover:bg-red-600/95 dark:hover:bg-red-600/95 active:bg-red-700 dark:active:bg-red-700 font-semibold font-sans focus:ring-0 rounded-lg"
+                onClick={handleSignOut}
+              >
+                Log Out
+              </Button>
+            )}
           </NavbarCollapse>
         </FlowbiteNavbar>
       </div>
 
-      <ModalAuth openModal={openModal} setOpenModal={setOpenModal} />
+      {!user && (
+        <ModalAuth
+          openModal={openModal}
+          setOpenModal={setOpenModal}
+          setOpenPopup={setOpenPopup}
+        />
+      )}
+
+      <Modal
+        show={openPopup}
+        size="md"
+        popup
+        onClose={() => setOpenPopup(false)}
+      >
+        <ModalHeader />
+        <ModalBody>
+          <div className="text-center">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              className="mx-auto mb-4 h-15 w-15 text-green-400 dark:text-green-400"
+            >
+              <path
+                fillRule="evenodd"
+                d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z"
+                clipRule="evenodd"
+              />
+            </svg>
+            <h1 className="text-2xl font-semibold dark:text-white text-gray-900 mb-2">
+              You successfully logged in!
+            </h1>
+            <p className="text-sm font-normal text-gray-500 dark:text-gray-400">
+              In order to log in CoinMarketCap on mobile site/App, please set
+              your email and password in ‘Account Setting’ page.
+            </p>
+            <Button
+              color="blue"
+              className="w-full mt-8"
+              onClick={() => setOpenPopup(false)}
+            >
+              Yes, I'm sure
+            </Button>
+          </div>
+        </ModalBody>
+      </Modal>
     </>
   );
 }

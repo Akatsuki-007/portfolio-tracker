@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Nunito } from "next/font/google";
 import "./globals.css";
+import StoreProvider from "@/app/store-provider";
 import { StagewiseToolbar } from "@stagewise/toolbar-next";
 import Navbar from "@/components/navbar";
 
@@ -39,8 +40,11 @@ export default function RootLayout({
             plugins: [], // Add your custom plugins here
           }}
         />
-        <Navbar />
-        {children}
+
+        <StoreProvider>
+          <Navbar />
+          {children}
+        </StoreProvider>
       </body>
     </html>
   );
