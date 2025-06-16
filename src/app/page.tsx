@@ -14,7 +14,6 @@ export default function Home() {
         `/api/search`,
       );
       const data = await res.json();
-      console.log(data);
       setSearchResults(data.data);
     };
     fetchSearchResults();

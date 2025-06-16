@@ -16,10 +16,22 @@ export default function RowTable({
           `/api/info?symbol=${crypto.symbol}`,
         );
         const data = await res.json();
-        console.log(data);
         setInfo(data.data);
       };
       fetchInfo();
+    }, []);
+
+  const [price, setPrice] = useState<any>([]);
+  useEffect(() => {
+      const fetchPrice = async () => {
+        const res = await fetch(
+          `/api/price?symbol=BTC`,
+        );
+        const data = await res.json();
+        console.log(data.data);
+        setPrice(data.data);
+      };
+      fetchPrice();
     }, []);
   return (
     <tr className={`${index % 2 === 0 ? "bg-black" : "bg-gray-700"}`}>
@@ -50,7 +62,7 @@ export default function RowTable({
           </button>
         </div>
       </td>
-      <td className="p-2.5">$67,000</td>
+      <td className="p-2.5">{price[crypto.symbol]?.quote?.USD.price}</td>
       <td className="p-2.5">+0.5%</td>
       <td className="p-2.5">+3.2%</td>
       <td className="p-2.5">+3.2%</td>
