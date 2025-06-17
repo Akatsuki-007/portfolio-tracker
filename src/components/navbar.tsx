@@ -66,7 +66,7 @@ function Navbar() {
               base: "text-gray-400 dark:text-gray-400 hover:bg-gray-700 dark:hover:bg-gray-700 focus:ring-gray-600 dark:focus:ring-gray-600",
             },
           }}
-          className="container mx-auto border-b-2 border-gray-800 bg-[#0c1421]"
+          className="container mx-auto border-b-2 border-gray-800 dark:border-gray-800 bg-[#0c1421]"
         >
           <div className="flex items-center gap-4">
             <Link
@@ -135,19 +135,19 @@ function Navbar() {
               open={open}
               onOpenChange={setOpen}
               content={
-                <div className="flex w-60 flex-col gap-4 p-4 text-sm text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 rounded-lg">
+                <div className="flex w-60 flex-col gap-4 p-4 text-sm text-gray-500 dark:text-gray-400 bg-gray-800 dark:bg-gray-800 rounded-lg">
                   {user.uid === "" ? (
                     <>
                       <Button
                         size="sm"
-                        className="cursor-pointer bg-[#3861FB] hover:bg-[#3861FB]/95 active:bg-[#1145d3] font-semibold font-sans focus:ring-0 rounded-lg"
+                        className="cursor-pointer bg-[#3861FB] hover:bg-[#3861FB]/95 hover:dark:bg-[#3861FB]/95 active:bg-[#1145d3] font-semibold font-sans focus:ring-0 rounded-lg"
                         onClick={() => setOpenModal("login")}
                       >
                         Log In
                       </Button>
                       <Button
                         size="sm"
-                        className="cursor-pointer hover:bg-gray-50/25 box-border hover:border-[#3861FB] border-2 font-semibold font-sans focus:ring-0 text-black hover:text-black active:text-[#3861FB] rounded-lg"
+                        className="cursor-pointer hover:bg-[#3861FB] box-border border-[#3861FB] hover:border-[#3861FB] border-2 font-semibold font-sans focus:ring-0 text-[#5f81fc] dark:text-[#5f81fc] hover:text-white active:text-white rounded-lg"
                         outline
                         onClick={() => setOpenModal("signup")}
                       >
@@ -164,11 +164,11 @@ function Navbar() {
                           src={user.photoURL || IconProfile}
                           alt="User Avatar"
                         />
-                        <h1 className="text-sm font-medium line-clamp-1">
+                        <h1 className="text-gray-400 dark:text-gray-400 text-sm font-medium line-clamp-1">
                           {user.email}
                         </h1>
                       </div>
-                      <HR className="my-0" />
+                      <HR className="my-0 bg-gray-700 dark:bg-gray-700" />
                       <Button
                         size="sm"
                         className="cursor-pointer w-full bg-red-600 dark:bg-red-600 hover:bg-red-600/95 dark:hover:bg-red-600/95 active:bg-red-700 dark:active:bg-red-700 font-semibold font-sans focus:ring-0 rounded-lg"
