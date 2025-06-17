@@ -223,6 +223,11 @@ function ModalAuth({
         <div className="space-y-4">
           {openModal === "signup" && (
             <>
+              {errorForm.google && (
+                <p className="text-red-500 text-sm text-center">
+                  {errorForm.google}
+                </p>
+              )}
               <Button
                 size="sm"
                 className="cursor-pointer w-full flex items-center gap-2 font-semibold font-sans focus:ring-0 rounded-lg"
@@ -393,6 +398,11 @@ function ModalAuth({
                 <h1 className="font-semibold font-sans uppercase">Or</h1>
                 <div className="w-full h-px bg-gray-200"></div>
               </div>
+              {errorForm.google && (
+                <p className="text-red-500 text-sm text-center">
+                  {errorForm.google}
+                </p>
+              )}
               <Button
                 size="sm"
                 className="cursor-pointer w-full flex items-center gap-2 font-semibold font-sans focus:ring-0 rounded-lg"
