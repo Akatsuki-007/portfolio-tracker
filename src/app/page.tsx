@@ -21,7 +21,7 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    
+
     const filtered = searchResults?.filter(
       (crypto) =>
         crypto.name.toLowerCase().includes(search.toLowerCase()) ||
@@ -42,31 +42,31 @@ export default function Home() {
 
       </div>
       <div className="relative m-4 overflow-x-auto bg-black shadow-md sm:rounded-lg">
-      <table className="w-full text-sm text-left text-gray-300">
-        <thead className="text-sm bg-gray-700">
-          <tr>
-            <th className="p-2.5"></th>
-            <th className="p-2.5">#</th>
-            <th className="p-2.5">Name</th>
-            <th className="p-2.5"></th>
-            <th className="p-2.5">Price</th>
-            <th className="p-2.5">1h %</th>
-            <th className="p-2.5">24h %</th>
-            <th className="p-2.5">24h %</th>
-            <th className="p-2.5">7d %</th>
-            <th className="p-2.5">Market Cap</th>
-            <th className="p-2.5">Volume(24h) </th>
-            <th className="p-2.5">Calculating Supply</th>
-            <th className="p-2.5">Last 7 Days</th>
-          </tr>
-        </thead>
-        <tbody>
+        <table className="w-full text-sm text-left text-gray-300">
+          <thead className="text-sm bg-gray-700">
+            <tr>
+              <th className="p-2.5"></th>
+              <th className="p-2.5">#</th>
+              <th className="p-2.5">Name</th>
+              <th className="p-2.5"></th>
+              <th className="p-2.5">Price</th>
+              <th className="p-2.5">1h %</th>
+              <th className="p-2.5">24h %</th>
+              <th className="p-2.5">24h %</th>
+              <th className="p-2.5">7d %</th>
+              <th className="p-2.5">Market Cap</th>
+              <th className="p-2.5">Volume(24h) </th>
+              <th className="p-2.5">Calculating Supply</th>
+              <th className="p-2.5">Last 7 Days</th>
+            </tr>
+          </thead>
+          <tbody>
             {filteredResults?.map((crypto, index) => (
-            <RowTable key={crypto.id} index={index} crypto={crypto}/>
-          ))}
-        </tbody>
-      </table>
-    </div>
+              <RowTable key={crypto.id} index={index} crypto={crypto} />
+            ))}
+          </tbody>
+        </table>
+      </div>
     </>
   );
 }

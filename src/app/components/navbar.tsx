@@ -12,8 +12,8 @@ import {
   popoverTheme,
 } from "flowbite-react";
 import Image from "next/image";
-import Logo from "../../public/logo-3.png";
-import ModalAuth from "./navbar-auth";
+import Logo from "../../../public/logo-3.png";
+import ModalAuth from "@/app/components/navbar-auth";
 
 function Navbar() {
   const [open, setOpen] = useState<boolean>(false);
