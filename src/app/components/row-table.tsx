@@ -65,26 +65,22 @@ export default function RowTable({
     fetchInfo();
   }, [crypto.symbol]);
   return (
-    <tr className={`${index % 2 === 0 ? "bg-black" : "bg-gray-700"}`}>
-      <td className="p-2.5"></td>
+    <tr className="border-b border-gray-600">
+      <td className="py-10"></td>
       <td className="p-2.5 text-[#ededed]">{index + 1}</td>
       <td className="px-4 py-4 text-[#ededed]">
         <div>
-          <a href="#">
-            <span className="flex gap-3 items-center">
-              <img
-                className="w-6 h-auto"
-                src={info && info[crypto.symbol]?.logo}
-                alt="Bitcoin"
-              />
-              <p className="font-semibold text-[#ededed]">
-                {crypto.name}{" "}
-                <span className="font-thin text-[#ededed]">
-                  {crypto.symbol}
-                </span>{" "}
-              </p>
-            </span>
-          </a>
+          <span className="flex gap-3 items-center">
+            <img
+              className="w-6 h-auto"
+              src={info && info[crypto.symbol]?.logo}
+              alt="Bitcoin"
+            />
+            <p className="font-semibold text-[#ededed]">
+              {crypto.name}{" "}
+              <span className="font-thin text-[#ededed]">{crypto.symbol}</span>{" "}
+            </p>
+          </span>
         </div>
       </td>
       {/* <td className="p-2.5">

@@ -10,9 +10,7 @@ export default function Home() {
 
   useEffect(() => {
     const fetchSearchResults = async () => {
-      const res = await fetch(
-        `/api/search`,
-      );
+      const res = await fetch(`/api/search`);
       const data = await res.json();
       setSearchResults(data.data);
     };
@@ -20,7 +18,6 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    
     const filtered = searchResults?.filter(
       (crypto) =>
         crypto.name.toLowerCase().includes(search.toLowerCase()) ||
@@ -30,45 +27,45 @@ export default function Home() {
   }, [search, searchResults]);
   return (
     <>
-    <div className="max-w-400 mx-auto px-4">
-    <div className="grid grid-cols-4 gap-4 m-4">
-      <div>
-        <input
-          type="text"
-          placeholder="Search..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="p-2 border rounded mb-4 w-full"
-        />
+      <div className="container mx-auto px-4 mt-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div>
+            <input
+              type="text"
+              placeholder="Search..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="p-2 border rounded mb-4 w-full"
+            />
+          </div>
+        </div>
+        <div className="relative mx-4 overflow-x-auto bg-transparent">
+          <table className="w-full text-sm text-left text-gray-300">
+            <thead className="text-sm border-y border-gray-600">
+              <tr>
+                <th className="p-2.5"></th>
+                <th className="p-2.5">#</th>
+                <th className="p-2.5">Name</th>
+                {/* <th className="p-2.5"></th> */}
+                <th className="p-2.5">Price</th>
+                <th className="p-2.5">1h %</th>
+                <th className="p-2.5">24h %</th>
+                {/* <th className="p-2.5">24h %</th> */}
+                <th className="p-2.5">7d %</th>
+                <th className="p-2.5">Market Cap</th>
+                <th className="p-2.5">Volume(24h) </th>
+                <th className="p-2.5">Calculating Supply</th>
+                <th className="p-2.5">Last 7 Days</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredResults?.map((crypto, index) => (
+                <RowTable key={crypto.id} index={index} crypto={crypto} />
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
-      </div>
-      <div className="relative m-4 overflow-x-auto bg-black shadow-md sm:rounded-lg">
-      <table className="w-full text-sm text-left text-gray-300">
-        <thead className="text-sm bg-gray-700">
-          <tr>
-            <th className="p-2.5"></th>
-            <th className="p-2.5">#</th>
-            <th className="p-2.5">Name</th>
-            {/* <th className="p-2.5"></th> */}
-            <th className="p-2.5">Price</th>
-            <th className="p-2.5">1h %</th>
-            <th className="p-2.5">24h %</th>
-            {/* <th className="p-2.5">24h %</th> */}
-            <th className="p-2.5">7d %</th>
-            <th className="p-2.5">Market Cap</th>
-            <th className="p-2.5">Volume(24h) </th>
-            <th className="p-2.5">Calculating Supply</th>
-            <th className="p-2.5">Last 7 Days</th>
-          </tr>
-        </thead>
-        <tbody>
-            {filteredResults?.map((crypto, index) => (
-            <RowTable key={crypto.id} index={index} crypto={crypto}/>
-          ))}
-        </tbody>
-      </table>
-    </div>
-    </div>
     </>
   );
 }
