@@ -30,6 +30,8 @@ export default function Home() {
   }, [search, searchResults]);
   return (
     <>
+    <div className="max-w-400 mx-auto px-4">
+    <div className="grid grid-cols-4 gap-4 m-4">
       <div>
         <input
           type="text"
@@ -38,7 +40,7 @@ export default function Home() {
           onChange={(e) => setSearch(e.target.value)}
           className="p-2 border rounded mb-4 w-full"
         />
-
+      </div>
       </div>
       <div className="relative m-4 overflow-x-auto bg-black shadow-md sm:rounded-lg">
       <table className="w-full text-sm text-left text-gray-300">
@@ -65,6 +67,7 @@ export default function Home() {
           ))}
         </tbody>
       </table>
+    </div>
     </div>
     </>
   );
