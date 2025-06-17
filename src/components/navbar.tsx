@@ -13,6 +13,7 @@ import {
   Modal,
   ModalHeader,
   ModalBody,
+  HR,
 } from "flowbite-react";
 import Image from "next/image";
 import Logo from "../../public/logo-3.png";
@@ -134,27 +135,40 @@ function Navbar() {
               open={open}
               onOpenChange={setOpen}
               content={
-                <div className="flex w-60 flex-col gap-4 p-4 text-sm text-gray-500 dark:text-gray-400 bg-gray-800 dark:bg-gray-800 rounded-lg">
-                  <div className="flex gap-2">
-                    {user.uid === "" ? (
-                      <>
-                        <Button
-                          size="sm"
-                          className="cursor-pointer bg-[#3861FB] hover:bg-[#3861FB]/95 hover:dark:bg-[#3861FB]/95 active:bg-[#1145d3] font-semibold font-sans focus:ring-0 rounded-lg"
-                          onClick={() => setOpenModal("login")}
-                        >
-                          Log In
-                        </Button>
-                        <Button
-                          size="sm"
-                          className="cursor-pointer hover:bg-[#3861FB] box-border border-[#3861FB] hover:border-[#3861FB] border-2 font-semibold font-sans focus:ring-0 text-[#5f81fc] dark:text-[#5f81fc] hover:text-white active:text-[#3861FB] rounded-lg"
-                          outline
-                          onClick={() => setOpenModal("signup")}
-                        >
-                          Sign Up
-                        </Button>
-                      </>
-                    ) : (
+                <div className="flex w-60 flex-col gap-4 p-4 text-sm text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 rounded-lg">
+                  {user.uid === "" ? (
+                    <>
+                      <Button
+                        size="sm"
+                        className="cursor-pointer bg-[#3861FB] hover:bg-[#3861FB]/95 active:bg-[#1145d3] font-semibold font-sans focus:ring-0 rounded-lg"
+                        onClick={() => setOpenModal("login")}
+                      >
+                        Log In
+                      </Button>
+                      <Button
+                        size="sm"
+                        className="cursor-pointer hover:bg-gray-50/25 box-border hover:border-[#3861FB] border-2 font-semibold font-sans focus:ring-0 text-black hover:text-black active:text-[#3861FB] rounded-lg"
+                        outline
+                        onClick={() => setOpenModal("signup")}
+                      >
+                        Sign Up
+                      </Button>
+                    </>
+                  ) : (
+                    <>
+                      <div className="flex items-center gap-2">
+                        <Image
+                          className="rounded-full"
+                          height={40}
+                          width={40}
+                          src={user.photoURL || IconProfile}
+                          alt="User Avatar"
+                        />
+                        <h1 className="text-sm font-medium line-clamp-1">
+                          {user.email}
+                        </h1>
+                      </div>
+                      <HR className="my-0" />
                       <Button
                         size="sm"
                         className="cursor-pointer w-full bg-red-600 dark:bg-red-600 hover:bg-red-600/95 dark:hover:bg-red-600/95 active:bg-red-700 dark:active:bg-red-700 font-semibold font-sans focus:ring-0 rounded-lg"
@@ -162,16 +176,16 @@ function Navbar() {
                       >
                         Log Out
                       </Button>
-                    )}
-                  </div>
+                    </>
+                  )}
                 </div>
               }
             >
-              <Button className="cursor-pointer focus:ring-0 p-0 rounded-full w-10 h-10 overflow-hidden">
+              <Button className="cursor-pointer focus:ring-0 p-0 rounded-full w-10 h-10 overflow-hidden border-2 border-gray-600">
                 <Image
                   height={40}
                   width={40}
-                  className="rounded-full w-full h-full object-cover border-2 border-[#3861FB]"
+                  className="rounded-full w-full h-full object-cover"
                   src={user.photoURL !== "" ? user.photoURL : IconProfile}
                   alt="Avatar"
                 />
