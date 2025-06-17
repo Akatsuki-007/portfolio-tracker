@@ -131,7 +131,7 @@ function Navbar() {
                   base: "bg-gray-800 border-gray-600 mix-blend-color",
                 },
               }}
-              open={true}
+              open={open}
               onOpenChange={setOpen}
               content={
                 <div className="flex w-60 flex-col gap-4 p-4 text-sm text-gray-500 dark:text-gray-400 bg-gray-800 dark:bg-gray-800 rounded-lg">
