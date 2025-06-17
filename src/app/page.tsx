@@ -49,11 +49,11 @@ export default function Home() {
             <th className="p-2.5"></th>
             <th className="p-2.5">#</th>
             <th className="p-2.5">Name</th>
-            <th className="p-2.5"></th>
+            {/* <th className="p-2.5"></th> */}
             <th className="p-2.5">Price</th>
             <th className="p-2.5">1h %</th>
             <th className="p-2.5">24h %</th>
-            <th className="p-2.5">24h %</th>
+            {/* <th className="p-2.5">24h %</th> */}
             <th className="p-2.5">7d %</th>
             <th className="p-2.5">Market Cap</th>
             <th className="p-2.5">Volume(24h) </th>
