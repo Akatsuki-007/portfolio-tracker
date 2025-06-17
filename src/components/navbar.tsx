@@ -147,11 +147,11 @@ function Navbar() {
                 </div>
               }
             >
-              <Button className="cursor-pointer focus:ring-0 p-0 rounded-full w-10 h-10 overflow-hidden">
+              <Button className="cursor-pointer focus:ring-0 p-0 rounded-full w-10 h-10 overflow-hidden border-2 border-gray-600">
                 <Image
                   height={40}
                   width={40}
-                  className="rounded-full w-full h-full object-cover border-2 border-[#3861FB]"
+                  className="rounded-full w-full h-full object-cover"
                   src={user.photoURL !== "" ? user.photoURL : IconProfile}
                   alt="Avatar"
                 />
