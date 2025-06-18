@@ -1,6 +1,7 @@
 "use client";
 import { MdStarBorder } from "react-icons/md";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 export default function RowTable({
   crypto,
@@ -9,9 +10,6 @@ export default function RowTable({
   crypto: any;
   index: number;
 }) {
-  const [info, setInfo] = useState<any>([]);
-  const [price, setPrice] = useState<any>([]);
-  const [sparkline, setSparkline] = useState<any>([]);
 
   const Sparkline = ({ prices }: { prices: number[] }) => {
     if (!prices?.length) return null;
@@ -39,48 +37,27 @@ export default function RowTable({
     );
   };
 
-  useEffect(() => {
-    const fetchInfo = async () => {
-      try {
-        const [infoRes, priceRes, sparklineRes] = await Promise.all([
-          fetch(`/api/info?symbol=${crypto.symbol}`),
-          fetch(`/api/price?symbol=${crypto.symbol}`),
-          fetch(`/api/sparkline?symbol=${crypto.symbol}`),
-        ]);
-        const [infoData, priceData, sparklineData] = await Promise.all([
-          infoRes.json(),
-          priceRes.json(),
-          sparklineRes.json(),
-        ]);
-        console.log("infoRes", infoData.data);
-        setInfo(infoData.data);
-        console.log("priceRes", priceData.data);
-        setPrice(priceData.data);
-        console.log("sparkline", sparklineData);
-        setSparkline(sparklineData);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-    fetchInfo();
-  }, [crypto.symbol]);
   return (
-    <tr className="border-b border-gray-600">
-      <td className="py-10"></td>
-      <td className="p-2.5 text-[#ededed]">{index + 1}</td>
-      <td className="px-4 py-4 text-[#ededed]">
+    
+    <tr className={`${index % 2 === 0 ? "bg-black" : "bg-gray-700"}`}>
+      <td className="p-2.5">
+        
+      </td>
+      <td className="p-2.5">{index+1}</td>
+      <td className="px-4 py-4">
         <div>
-          <span className="flex gap-3 items-center">
-            <img
-              className="w-6 h-auto"
-              src={info && info[crypto.symbol]?.logo}
-              alt="Bitcoin"
-            />
-            <p className="font-semibold text-[#ededed]">
-              {crypto.name}{" "}
-              <span className="font-thin text-[#ededed]">{crypto.symbol}</span>{" "}
-            </p>
-          </span>
+          <Link href={`/detail/${crypto.symbol}`}>
+            <span className="flex gap-3 items-center">
+              <img
+                className="w-6 h-auto"
+                src={crypto.image}
+                alt="Bitcoin"
+              />
+              <p className="font-semibold">
+                {crypto.name} <span className="font-thin">{crypto.symbol.toUpperCase()}</span>{" "}
+              </p>
+            </span>
+          </Link>
         </div>
       </td>
       {/* <td className="p-2.5">
@@ -91,80 +68,54 @@ export default function RowTable({
         </div>
       </td> */}
       {/* Price */}
-      <td className="p-2.5">
-        {price?.[crypto.symbol]?.[0]?.quote?.USD.price
-          ? price?.[crypto.symbol]?.[0]?.quote?.USD.price >= 0.001
-            ? `$${Number(
-                price?.[crypto.symbol]?.[0]?.quote?.USD.price.toFixed(2)
-              ).toLocaleString()}`
-            : `$${Number(
-                price?.[crypto.symbol]?.[0]?.quote?.USD.price
-              ).toPrecision(4)}`
-          : "N/A"}
-      </td>
+      <td className="p-2.5">{
+  typeof crypto.current_price === 'number'
+    ? crypto.current_price >= 1
+      ? `$${crypto.current_price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 4 })}`
+      : `$${crypto.current_price.toLocaleString(undefined, { minimumFractionDigits: 4, maximumFractionDigits: 8 })}`
+    : 'N/A'
+}</td>
       {/* percent change 1H */}
-      <td className="p-2.5">
-        {price?.[crypto.symbol]?.[0]?.quote.USD.percent_change_1h
-          ? price?.[crypto.symbol]?.[0]?.quote.USD.percent_change_1h >= 0
-            ? `${price?.[
-                crypto.symbol
-              ]?.[0]?.quote.USD.percent_change_1h.toFixed(2)}%`
-            : `${price?.[
-                crypto.symbol
-              ]?.[0]?.quote.USD.percent_change_1h.toFixed(2)}%`
-          : "N/A"}
-      </td>
+      <td className="p-2.5">{
+      crypto.price_change_percentage_1h_in_currency
+      ? crypto.price_change_percentage_1h_in_currency >= 0
+        ? `${crypto.price_change_percentage_1h_in_currency.toFixed(2)}%`
+        : `${crypto.price_change_percentage_1h_in_currency.toFixed(2)}%`
+      : 'N/A'}</td>
       {/* percent change 24H */}
-      <td className="p-2.5">
-        {price?.[crypto.symbol]?.[0]?.quote.USD.percent_change_24h
-          ? price?.[crypto.symbol]?.[0]?.quote.USD.percent_change_24h >= 0
-            ? `+${price?.[
-                crypto.symbol
-              ]?.[0]?.quote.USD.percent_change_24h.toFixed(2)}%`
-            : `${price?.[
-                crypto.symbol
-              ]?.[0]?.quote.USD.percent_change_24h.toFixed(2)}%`
-          : "N/A"}
-      </td>
+      <td className="p-2.5">{
+        crypto.price_change_percentage_24h
+        ? crypto.price_change_percentage_24h >= 0
+          ? `+${crypto.price_change_percentage_24h.toFixed(2)}%`
+          : `${crypto.price_change_percentage_24h.toFixed(2)}%`
+        : 'N/A'}</td>
       {/* <td className="p-2.5">+3.2%</td> */}
       {/* percent change 7D */}
-      <td className="p-2.5">
-        {price?.[crypto.symbol]?.[0]?.quote.USD.percent_change_7d
-          ? price?.[crypto.symbol]?.[0]?.quote.USD.percent_change_7d >= 0
-            ? `+${price?.[
-                crypto.symbol
-              ]?.[0]?.quote.USD.percent_change_7d.toFixed(2)}%`
-            : `${price?.[
-                crypto.symbol
-              ]?.[0]?.quote.USD.percent_change_7d.toFixed(2)}%`
-          : "N/A"}
-      </td>
+      <td className="p-2.5">{
+        crypto.price_change_percentage_7d_in_currency
+        ? crypto.price_change_percentage_7d_in_currency >= 0
+          ? `+${crypto.price_change_percentage_7d_in_currency.toFixed(2)}%`
+          : `${crypto.price_change_percentage_7d_in_currency.toFixed(2)}%`
+        : 'N/A'}</td>
       {/* MCap */}
-      <td className="p-2.5">
-        {price?.[crypto.symbol]?.[0]?.quote.USD.market_cap >= 0
-          ? `$${Number(
-              price?.[crypto.symbol]?.[0]?.quote.USD.market_cap.toFixed(2)
-            ).toLocaleString()}`
-          : "N/A"}
-      </td>
+      <td className="p-2.5">{
+        crypto.market_cap >= 0
+        ? `$${Number(crypto.market_cap.toFixed(2)).toLocaleString()}`
+        : 'N/A'}</td>
       {/* Volume 24h */}
-      <td className="p-2.5">
-        {price?.[crypto.symbol]?.[0]?.quote.USD.volume_24h >= 0
-          ? `$${Number(
-              price?.[crypto.symbol]?.[0]?.quote.USD.volume_24h.toFixed(2)
-            ).toLocaleString()}`
-          : "N/A"}
-      </td>
+      <td className="p-2.5">{
+        crypto.total_volume >= 0
+        ? `${Number(crypto.total_volume.toFixed(2)).toLocaleString()}`
+        : 'N/A'}</td>
       {/* Circulating Supply */}
-      <td className="p-2.5">
-        {price?.[crypto.symbol]?.[0]?.circulating_supply >= 0
-          ? `${Number(
-              price?.[crypto.symbol]?.[0]?.circulating_supply.toFixed(2)
-            ).toLocaleString()} ${crypto.symbol}`
-          : "N/A"}
-      </td>
+      <td className="p-2.5">{
+        crypto.circulating_supply >= 0
+        ? `${Number(crypto.circulating_supply.toFixed(2)).toLocaleString()} ${crypto.symbol.toUpperCase()}`
+        : 'N/A'}</td>
       <td className="px-2 py-2">
-        <Sparkline prices={sparkline?.[0]?.sparkline_in_7d?.price || []} />
+        <Sparkline
+          prices={crypto.sparkline_in_7d?.price || []}
+        />
       </td>
     </tr>
   );

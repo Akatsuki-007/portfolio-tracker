@@ -5,14 +5,16 @@ import RowTable from "./components/row-table";
 
 export default function Home() {
   const [search, setSearch] = useState("");
-  const [searchResults, setSearchResults] = useState<SearchData[]>([]);
-  const [filteredResults, setFilteredResults] = useState<SearchData[]>([]);
+  const [searchResults, setSearchResults] = useState<any[]>([]);
+  const [filteredResults, setFilteredResults] = useState<any[]>([]);
 
   useEffect(() => {
     const fetchSearchResults = async () => {
-      const res = await fetch(`/api/search`);
+      const res = await fetch(
+        "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=10&page=1&sparkline=true&price_change_percentage=1h,24h,7d"
+      );
       const data = await res.json();
-      setSearchResults(data.data);
+      setSearchResults(data);
     };
     fetchSearchResults();
   }, []);
@@ -53,7 +55,7 @@ export default function Home() {
                 {/* <th className="p-2.5">24h %</th> */}
                 <th className="p-2.5">7d %</th>
                 <th className="p-2.5">Market Cap</th>
-                <th className="p-2.5">Volume(24h) </th>
+                <th className="p-2.5">Total Volume </th>
                 <th className="p-2.5">Calculating Supply</th>
                 <th className="p-2.5">Last 7 Days</th>
               </tr>

@@ -2,13 +2,21 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const symbol = searchParams.get("symbol");
     try {
+        const params = {
+            vs_currency: 'usd',
+            sparkline: 'true',
+            symbols: encodeURIComponent(symbol ?? ""),
+            price_change_percentage: '1h,24h,7d',
+        };
+        const queryString = new URLSearchParams(params).toString();
+        const url = `https://api.coingecko.com/api/v3/coins/markets?${queryString}`;
         const res = await fetch(
-            `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&symbols=${symbol}&sparkline=true`,
+            url,
             {
-                headers: {
-                    accept: 'application/json',
-                    "x-cg-demo-api-key": "CG-oFqPdG5gu2i7yRumGWqakQLA", // Ganti dengan API key kamu
-                },
+            headers: {
+                accept: 'application/json',
+                "x-cg-demo-api-key": "CG-oFqPdG5gu2i7yRumGWqakQLA", // Ganti dengan API key kamu
+            }
             }
         );
         const data = await res.json();
