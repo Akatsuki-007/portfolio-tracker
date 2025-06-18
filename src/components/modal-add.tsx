@@ -53,10 +53,15 @@ export default function ModalAdd({
       setSearch(editTransaction.coinName);
     }
   }, [editTransaction]);
-
   // Search for coins
   useEffect(() => {
     const searchCoins = async () => {
+      // Don't show search results if a coin is already selected and the search matches the selected coin name
+      if (selectedCoin && search === selectedCoin.name) {
+        setShowSearchResults(false);
+        return;
+      }
+
       if (search.length > 2) {
         try {
           const response = await fetch("/api/search");
@@ -80,7 +85,7 @@ export default function ModalAdd({
 
     const timeoutId = setTimeout(searchCoins, 300);
     return () => clearTimeout(timeoutId);
-  }, [search]);
+  }, [search, selectedCoin]);
 
   const handleCoinSelect = (coin: SearchData) => {
     setSelectedCoin(coin);
@@ -140,7 +145,6 @@ export default function ModalAdd({
       show={openModal}
       size="md"
       onClose={() => setOpenModal(false)}
-      dismissible
       theme={{
         ...modalTheme,
         root: {
