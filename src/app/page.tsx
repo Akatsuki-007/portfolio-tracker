@@ -1,7 +1,8 @@
-"use client";
-import { useEffect, useState } from "react";
+'use client';
+import { useEffect, useState } from 'react';
 
-import RowTable from "./components/row-table";
+import RowTable from './components/row-table';
+import ModalAdd from '@/components/modal-add';
 
 export default function Home() {
   const [search, setSearch] = useState("");
