@@ -46,7 +46,10 @@ export default function ModalAdd({
             <Button className="cursor-pointer w-full bg-blue-600 dark:bg-blue-600 hover:bg-blue-700 dark:hover:bg-blue-700">
               Buy
             </Button>
-            <Button className="cursor-pointer w-full bg-red-600 dark:bg-red-600 hover:bg-red-700 dark:hover:bg-red-700">
+            <Button
+              color="red"
+              className="cursor-pointer w-full bg-red-600 dark:bg-red-600 hover:bg-red-700 dark:hover:bg-red-700"
+            >
               Sell
             </Button>
           </div>
@@ -75,9 +78,9 @@ export default function ModalAdd({
           </div>
           <div>
             <Datepicker
-              className="bg-gray-800"
               theme={{
                 ...datePickerTheme,
+                root: { ...datePickerTheme.root },
                 popup: {
                   ...datePickerTheme.popup,
                   root: {
