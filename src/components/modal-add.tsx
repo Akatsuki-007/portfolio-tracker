@@ -159,7 +159,7 @@ export default function ModalAdd({
         Add Transaction
       </h3>
       <ModalBody>
-        <div className="bg-gray-900 text-white rounded-lg px-6 pt-4 pb-6">
+        <div className="text-white rounded-lg px-6 pt-4 pb-6">
           <div className="flex justify-center flex-row gap-2">
             <Button
               className="cursor-pointer w-full bg-blue-600 dark:bg-blue-600 hover:bg-blue-700 dark:hover:bg-blue-700"
