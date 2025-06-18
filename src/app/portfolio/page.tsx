@@ -15,7 +15,7 @@ export default function portfolioPage() {
     value: "$0",
     avatar: "green",
   });
-  const [openModal, setOpenModal] = useState(true);
+  const [openModal, setOpenModal] = useState(false);
 
   const handleCreatePortfolio = () => {
     // Handle portfolio creation logic here
@@ -255,6 +255,7 @@ export default function portfolioPage() {
             </div>
           </div>
         </div>
+        <ModalAdd openModal={openModal} setOpenModal={setOpenModal} />
       </>
     );
   }
@@ -391,7 +392,6 @@ export default function portfolioPage() {
           </div>
         </div>
       )}
-      <ModalAdd openModal={openModal} setOpenModal={setOpenModal} />
     </>
   );
 }
