@@ -14,7 +14,7 @@ export async function GET(request: Request) {
 
   try {
     const res = await fetch(
-      `https://pro-api.coinmarketcap.com/v1/cryptocurrency/info?symbol=${symbol}`,
+      `https://pro-api.coinmarketcap.com/v2/cryptocurrency/quotes/latest?symbol=${symbol}`,
       {
         headers: {
           "X-CMC_PRO_API_KEY": "f19e10c4-b75f-436a-85fd-40f4855775de", // Ganti dengan API key kamu
@@ -39,7 +39,7 @@ export async function GET(request: Request) {
   } catch (error) {
     console.error("Error fetching data:", error);
     return new Response(
-      JSON.stringify({ error: "Failed to fetch coin info" }),
+      JSON.stringify({ error: "Failed to fetch coin price" }),
       {
         status: 500,
         headers: { "Content-Type": "application/json" },

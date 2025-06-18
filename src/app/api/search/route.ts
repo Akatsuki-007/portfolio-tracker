@@ -3,7 +3,7 @@ export async function GET(request: Request) {
     // const symbol = searchParams.get("symbol");
     try {
         const res = await fetch(
-            `https://pro-api.coinmarketcap.com/v1/cryptocurrency/map?limit=10`,
+            `https://pro-api.coinmarketcap.com/v1/cryptocurrency/map?limit=6`,
             {
                 headers: {
                     "X-CMC_PRO_API_KEY": "f19e10c4-b75f-436a-85fd-40f4855775de", // Ganti dengan API key kamu

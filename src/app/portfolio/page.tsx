@@ -187,7 +187,7 @@ export default function portfolioPage() {
   return (
     <>
       {/* Hero Section */}
-      <div className="relative m-4 overflow-x-auto bg-black shadow-md sm:rounded-lg">
+      <div className="relative m-4 overflow-x-auto min-h-screen bg-black shadow-md sm:rounded-lg">
         <div className="text-center mb-12">
           <div className="mb-8">
             <Image

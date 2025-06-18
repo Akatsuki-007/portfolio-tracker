@@ -8,3 +8,9 @@ interface SearchData {
     symbol: string;
     slug: string;
 }
+
+interface User {
+  uid: string;
+  email: string;
+  photoURL: string;
+}
