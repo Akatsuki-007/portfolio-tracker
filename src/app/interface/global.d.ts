@@ -14,3 +14,12 @@ interface User {
   email: string;
   photoURL: string;
 }
+
+interface Transaction {
+  quantity: number;
+  spend: number;
+  receive: number;
+  date: string;
+  type: 'buy' | 'sell';
+  symbol: string;
+}

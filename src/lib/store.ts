@@ -1,10 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "@/lib/auth/auth-slicer";
+import portfolioReducer from "@/lib/portfolio/portfolio-slicer";
 
 export const makeStore = () => {
   return configureStore({
     reducer: {
       auth: authReducer,
+      portfolio: portfolioReducer,
     },
   });
 };
