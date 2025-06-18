@@ -10,7 +10,7 @@ export default function ModalAdd({
 }) {
   const [search, setSearch] = useState('');
   return (
-    <Modal show={openModal} size="md" onClose={() => setOpenModal(false)}>
+    <Modal show={openModal} size="md" onClose={() => setOpenModal(false)} dismissible>
       <div className=" bg-gray-900 text-white rounded-lg px-6 pt-4 pb-6">
         <h3 className="text-center pt-4 font-semibold text-base">
           Add Transaction
