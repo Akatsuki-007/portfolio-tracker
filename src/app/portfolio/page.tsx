@@ -79,13 +79,20 @@ export default function portfolioPage() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                   </svg>
                 </div>
-                <div>
+                <div className="flex items-center space-x-2">
                   <h1 className="text-xl text-white font-medium">{portfolioData.name}</h1>
+                  <button className="text-gray-400 hover:text-white">
+                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
+                    </svg>
+                  </button>
+                  <div className="hidden absolute mt-2 w-48 bg-gray-800 rounded-md shadow-lg py-1 z-10" id="portfolio-dropdown">
+                    <button className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 w-full text-left">Edit</button>
+                    <button className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 w-full text-left">Duplicate</button>
+                    <button className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 w-full text-left">Remove</button>
+                  </div>
                 </div>
-              </div>
 
-              <div className="flex items-center space-x-3">
-                <h2 className="text-3xl text-white font-bold">{portfolioData.value}</h2>
               </div>
 
               <div className="flex items-center space-x-2">
@@ -112,6 +119,11 @@ export default function portfolioPage() {
                   </svg>
                 </button>
               </div>
+
+            </div>
+            <div className="">
+              <h2 className="text-3xl text-white font-bold">{portfolioData.value}</h2>
+
             </div>
 
             {/* Empty Portfolio State */}
@@ -123,8 +135,7 @@ export default function portfolioPage() {
                   width={200}
                   height={200}
                   className="object-contain"
-                  // If you don't have this image, replace with the following:
-                  // This is a fallback until you can add the actual image
+
                   onError={(e) => {
                     e.currentTarget.onerror = null;
                     e.currentTarget.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200'%3E%3Crect width='200' height='200' fill='%234263EB'/%3E%3Cpath d='M50,150 L90,90 L130,130 L170,70' stroke='%2361E224' stroke-width='10' fill='none'/%3E%3Ccircle cx='160' cy='40' r='20' fill='%23FFCC00'/%3E%3C/svg%3E";
@@ -143,6 +154,9 @@ export default function portfolioPage() {
                 <span>Add Transaction</span>
               </button>
             </div>
+
+            {/* Assets Header */}
+            <h1 className="text-2xl font-bold text-white mt-10 mb-4 ml-4">Assets</h1>
 
             {/* Cryptocurrency Table */}
             <div className="relative m-4 overflow-x-auto bg-black shadow-md sm:rounded-lg">
@@ -170,6 +184,20 @@ export default function portfolioPage() {
                     <td>$104,276.80</td>
                     <td>$104,276.80</td>
                     <td>460.09</td>
+                    <td>
+                      <button className="px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium rounded-md transition-colors mr-2">Add</button>
+                      <button className="px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium rounded-md transition-colors">Delete</button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>ETH</td>
+                    <td>$2,528.92</td>
+                    <td>0.10 %</td>
+                    <td>1.67 %</td>
+                    <td>8.87 %</td>
+                    <td>$2,528.92</td>
+                    <td>$2,538.47</td>
+                    <td>$9.5517</td>
                     <td>
                       <button className="px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium rounded-md transition-colors mr-2">Add</button>
                       <button className="px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium rounded-md transition-colors">Delete</button>
