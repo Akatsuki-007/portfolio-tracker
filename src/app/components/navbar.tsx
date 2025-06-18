@@ -16,8 +16,8 @@ import {
   HR,
 } from "flowbite-react";
 import Image from "next/image";
-import Logo from "../../public/logo-3.png";
-import IconProfile from "../../public/user.png";
+import Logo from "../../../public/logo-3.png";
+import IconProfile from "../../../public/user.png";
 import ModalAuth from "./modal-auth";
 import { signOut } from "firebase/auth";
 import { auth } from "@/config/firebase";

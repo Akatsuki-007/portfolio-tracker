@@ -3,7 +3,7 @@ import { Geist, Geist_Mono, Nunito } from "next/font/google";
 import "./globals.css";
 import StoreProvider from "@/app/store-provider";
 import { StagewiseToolbar } from "@stagewise/toolbar-next";
-import Navbar from "@/components/navbar";
+import Navbar from "@/app/components/navbar";
 import { ReactPlugin } from "@stagewise-plugins/react";
 
 const geistSans = Geist({
