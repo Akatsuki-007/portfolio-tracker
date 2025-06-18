@@ -29,8 +29,8 @@ export default function Home() {
   }, [search, searchResults]);
   return (
     <>
-      <div className="max-w-400 mx-auto px-4">
-        <div className="grid grid-cols-4 gap-4 m-4">
+      <div className="container mx-auto px-4 mt-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           <div>
             <input
               type="text"
@@ -41,9 +41,9 @@ export default function Home() {
             />
           </div>
         </div>
-        <div className="relative m-4 overflow-x-auto bg-black shadow-md sm:rounded-lg">
+        <div className="relative mx-4 overflow-x-auto bg-transparent">
           <table className="w-full text-sm text-left text-gray-300">
-            <thead className="text-sm bg-gray-700">
+            <thead className="text-sm border-y border-gray-600">
               <tr>
                 <th className="p-2.5"></th>
                 <th className="p-2.5">#</th>

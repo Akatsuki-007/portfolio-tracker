@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {
   Modal,
+  modalTheme,
   ModalBody,
   Label,
   TextInput,
@@ -191,8 +192,25 @@ function ModalAuth({
   };
 
   return (
-    <Modal size="md" show={openModal ? true : false}>
-      <div className="flex items-start justify-between rounded-t border-b p-5 dark:border-gray-600">
+    <Modal
+      size="md"
+      show={openModal ? true : false}
+      theme={{
+        ...modalTheme,
+        root: {
+          ...modalTheme.root,
+          show: {
+            ...modalTheme.root.show,
+            on: "bg-gray-900/80 dark:bg-gray-900/80",
+          },
+        },
+        content: {
+          ...modalTheme.content,
+          inner: "bg-gray-700 dark:bg-gray-700",
+        },
+      }}
+    >
+      <div className="flex items-start justify-between rounded-t border-b p-5 border-gray-600 dark:border-gray-600">
         <div></div>
         <div className="flex items-start gap-5 **:data-cursor:cursor-pointer *:text-xl *:font-bold *:font-nunito *:flex *:flex-col *:items-center">
           {[
@@ -201,7 +219,7 @@ function ModalAuth({
           ].map((v) => (
             <span
               key={v.openModal}
-              className={`${openModal !== v.openModal && "text-gray-500"}`}
+              className={`${openModal !== v.openModal && "text-gray-400"}`}
             >
               <h1 data-cursor onClick={() => setOpenModal(v.openModal)}>
                 {v.name}
@@ -223,14 +241,9 @@ function ModalAuth({
         <div className="space-y-4">
           {openModal === "signup" && (
             <>
-              {errorForm.google && (
-                <p className="text-red-500 text-sm text-center">
-                  {errorForm.google}
-                </p>
-              )}
               <Button
                 size="sm"
-                className="cursor-pointer w-full flex items-center gap-2 font-semibold font-sans focus:ring-0 rounded-lg"
+                className="cursor-pointer bg-transparent hover:bg-blue-700 dark:hover:bg-blue-700 w-full flex items-center gap-2 font-semibold font-sans text-blue-500 dark:text-blue-500 focus:ring-0 rounded-lg border-blue-600 dark:border-blue-600"
                 outline
                 onClick={handleOAuth}
               >
@@ -261,7 +274,10 @@ function ModalAuth({
           >
             <div>
               <div className="mb-2 block">
-                <Label className="font-semibold font-sans" htmlFor="email1">
+                <Label
+                  className="font-semibold font-sans text-white dark:text-white"
+                  htmlFor="email1"
+                >
                   Email Address
                 </Label>
               </div>
@@ -306,7 +322,10 @@ function ModalAuth({
             </div>
             <div>
               <div className="mb-2 block">
-                <Label className="font-semibold font-sans" htmlFor="password1">
+                <Label
+                  className="font-semibold font-sans text-white dark:text-white"
+                  htmlFor="password1"
+                >
                   Password
                 </Label>
               </div>
@@ -382,6 +401,7 @@ function ModalAuth({
             <Button
               size="sm"
               type="submit"
+              className="cursor-pointer bg-blue-600 dark:bg-blue-600 hover:bg-blue-700 dark:hover:bg-blue-700"
               disabled={
                 openModal === "login"
                   ? form.login.email === "" || form.login.password === ""
@@ -398,14 +418,9 @@ function ModalAuth({
                 <h1 className="font-semibold font-sans uppercase">Or</h1>
                 <div className="w-full h-px bg-gray-200"></div>
               </div>
-              {errorForm.google && (
-                <p className="text-red-500 text-sm text-center">
-                  {errorForm.google}
-                </p>
-              )}
               <Button
                 size="sm"
-                className="cursor-pointer w-full flex items-center gap-2 font-semibold font-sans focus:ring-0 rounded-lg"
+                className="cursor-pointer bg-transparent hover:bg-blue-700 dark:hover:bg-blue-700 w-full flex items-center gap-2 font-semibold font-sans text-blue-500 dark:text-blue-500 focus:ring-0 rounded-lg border-blue-600 dark:border-blue-600"
                 outline
                 onClick={handleOAuth}
               >

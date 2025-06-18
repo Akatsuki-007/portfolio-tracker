@@ -1,6 +1,7 @@
 "use client";
 import { MdStarBorder } from "react-icons/md";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 export default function RowTable({
   crypto,
@@ -10,36 +11,34 @@ export default function RowTable({
   index: number;
 }) {
 
-  const [info, setInfo] = useState<any>([]);
-  const [price, setPrice] = useState<any>([]);
-  const [sparkline, setSparkline] = useState<any>([]);
-
   const Sparkline = ({ prices }: { prices: number[] }) => {
-  if (!prices?.length) return null;
+    if (!prices?.length) return null;
 
-  const min = Math.min(...prices);
-  const max = Math.max(...prices);
-  const range = max - min;
+    const min = Math.min(...prices);
+    const max = Math.max(...prices);
+    const range = max - min;
 
-  const points = prices.map((price, i) => {
-    const x = (i / (prices.length - 1)) * 100;
-    const y = 30 - ((price - min) / range) * 30;
-    return `${x},${y}`;
-  });
+    const points = prices.map((price, i) => {
+      const x = (i / (prices.length - 1)) * 100;
+      const y = 30 - ((price - min) / range) * 30;
+      return `${x},${y}`;
+    });
+
+    return (
+      <svg width={100} height={30}>
+        <path
+          d={`M ${points.join(" L ")}`}
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          className="text-blue-500"
+        />
+      </svg>
+    );
+  };
 
   return (
-    <svg width={100} height={30}>
-      <path
-        d={`M ${points.join(" L ")}`}
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        className="text-blue-500"
-      />
-    </svg>
-  );
-}
-  return (
+    
     <tr className={`${index % 2 === 0 ? "bg-black" : "bg-gray-700"}`}>
       <td className="p-2.5">
         
@@ -47,7 +46,7 @@ export default function RowTable({
       <td className="p-2.5">{index+1}</td>
       <td className="px-4 py-4">
         <div>
-          <a href="#">
+          <Link href={`/detail/${crypto.symbol}`}>
             <span className="flex gap-3 items-center">
               <img
                 className="w-6 h-auto"
@@ -58,12 +57,12 @@ export default function RowTable({
                 {crypto.name} <span className="font-thin">{crypto.symbol.toUpperCase()}</span>{" "}
               </p>
             </span>
-          </a>
+          </Link>
         </div>
       </td>
       {/* <td className="p-2.5">
         <div className="ml-2.5">
-          <button className=" p-0.5 border-2 border-blue-400 rounded-md">
+          <button className="p-0.5 border-2 border-blue-400 rounded-md text-[#ededed] bg-[#0c1421]">
             Buy
           </button>
         </div>

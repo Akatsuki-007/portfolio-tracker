@@ -54,26 +54,41 @@ function Navbar() {
               base: "md:hidden lg:hidden",
               list: "space-y-2",
             },
+            link: {
+              ...navbarTheme.link,
+              active: {
+                ...navbarTheme.link.active,
+                off: "border-gray-700 dark:border-gray-700 text-gray-400 dark:text-gray-400 hover:text-white dark:hover:text-white hover:bg-gray-700 dark:hover:bg-gray-700",
+              },
+            },
+            toggle: {
+              ...navbarTheme.toggle,
+              base: "text-gray-400 dark:text-gray-400 hover:bg-gray-700 dark:hover:bg-gray-700 focus:ring-gray-600 dark:focus:ring-gray-600",
+            },
           }}
-          className="container mx-auto border-b-2 border-gray-300"
+          className="container mx-auto border-b-2 border-gray-800 dark:border-gray-800 bg-[#0c1421]"
         >
           <div className="flex items-center gap-4">
             <Link
               href="/"
-              className="flex items-center gap-px text-lg font-bold leading-4 font-nunito tracking-tight"
+              className="flex items-center gap-px text-lg font-bold leading-4 font-nunito tracking-tight text-[#ededed]"
             >
               <Image src={Logo} alt="Logo" width={50} height={50} />
               <div className="flex flex-col ">
-                <h1>Portfolio</h1> <h1 className="-skew-x-12">Tracker</h1>
+                <h1 className="text-[#ededed]">Portfolio</h1>{" "}
+                <h1 className="-skew-x-12 text-[#ededed]">Tracker</h1>
               </div>
             </Link>
-            <ul className="hidden md:flex items-center gap-4 *:text-lg *:font-bold *:font-nunito *:hover:text-[#3861FB]">
+            <ul className="hidden md:flex items-center gap-4 *:text-lg *:font-bold *:font-nunito *:hover:text-[#3861FB] *:text-[#ededed]">
               <li>
                 <Link href="/">Cryptocurrency</Link>
               </li>
               {user.uid !== "" && (
                 <li>
-                  <Link href="/portfolio" className="flex items-center gap-0.5">
+                  <Link
+                    href="/portfolio"
+                    className="flex items-center gap-0.5 text-[#ededed]"
+                  >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 24 24"
@@ -110,24 +125,29 @@ function Navbar() {
             <Popover
               theme={{
                 ...popoverTheme,
+                base: "bg-gray-800 border border-gray-600 dark:border-gray-600",
                 content: "shadow-lg",
+                arrow: {
+                  ...popoverTheme.arrow,
+                  base: "bg-gray-800 border-gray-600 mix-blend-color",
+                },
               }}
               open={open}
               onOpenChange={setOpen}
               content={
-                <div className="flex w-60 flex-col gap-4 p-4 text-sm text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 rounded-lg">
+                <div className="flex w-60 flex-col gap-4 p-4 text-sm text-gray-500 dark:text-gray-400 bg-gray-800 dark:bg-gray-800 rounded-lg">
                   {user.uid === "" ? (
                     <>
                       <Button
                         size="sm"
-                        className="cursor-pointer bg-[#3861FB] hover:bg-[#3861FB]/95 active:bg-[#1145d3] font-semibold font-sans focus:ring-0 rounded-lg"
+                        className="cursor-pointer bg-[#3861FB] hover:bg-[#3861FB]/95 hover:dark:bg-[#3861FB]/95 active:bg-[#1145d3] font-semibold font-sans focus:ring-0 rounded-lg"
                         onClick={() => setOpenModal("login")}
                       >
                         Log In
                       </Button>
                       <Button
                         size="sm"
-                        className="cursor-pointer hover:bg-gray-50/25 box-border hover:border-[#3861FB] border-2 font-semibold font-sans focus:ring-0 text-black hover:text-black active:text-[#3861FB] rounded-lg"
+                        className="cursor-pointer hover:bg-[#3861FB] box-border border-[#3861FB] hover:border-[#3861FB] border-2 font-semibold font-sans focus:ring-0 text-[#5f81fc] dark:text-[#5f81fc] hover:text-white active:text-white rounded-lg"
                         outline
                         onClick={() => setOpenModal("signup")}
                       >
@@ -144,11 +164,11 @@ function Navbar() {
                           src={user.photoURL || IconProfile}
                           alt="User Avatar"
                         />
-                        <h1 className="text-sm font-medium line-clamp-1">
+                        <h1 className="text-gray-400 dark:text-gray-400 text-sm font-medium line-clamp-1">
                           {user.email}
                         </h1>
                       </div>
-                      <HR className="my-0" />
+                      <HR className="my-0 bg-gray-700 dark:bg-gray-700" />
                       <Button
                         size="sm"
                         className="cursor-pointer w-full bg-red-600 dark:bg-red-600 hover:bg-red-600/95 dark:hover:bg-red-600/95 active:bg-red-700 dark:active:bg-red-700 font-semibold font-sans focus:ring-0 rounded-lg"
@@ -213,7 +233,7 @@ function Navbar() {
                 </Button>
                 <Button
                   size="sm"
-                  className="cursor-pointer hover:bg-gray-50/25 box-border hover:border-[#3861FB] border-2 font-semibold font-sans focus:ring-0 text-black hover:text-black active:text-[#3861FB] rounded-lg"
+                  className="cursor-pointer hover:bg-[#3861FB] box-border border-[#3861FB] hover:border-[#3861FB] border-2 font-semibold font-sans focus:ring-0 text-[#5f81fc] dark:text-[#5f81fc] hover:text-white active:text-[#3861FB] rounded-lg"
                   outline
                   onClick={() => setOpenModal("signup")}
                 >
