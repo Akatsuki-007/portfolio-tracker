@@ -5,6 +5,7 @@ import {
   Datepicker,
   datePickerTheme,
   Button,
+  TextInput,
 } from "flowbite-react";
 import { useState, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
@@ -159,7 +160,7 @@ export default function ModalAdd({
         Add Transaction
       </h3>
       <ModalBody>
-        <div className="text-white rounded-lg px-6 pt-4 pb-6">
+        <div className="text-white rounded-lg px-6 pt-4 pb-6 space-y-4">
           <div className="flex justify-center flex-row gap-2">
             <Button
               className="cursor-pointer w-full bg-blue-600 dark:bg-blue-600 hover:bg-blue-700 dark:hover:bg-blue-700"
@@ -175,60 +176,13 @@ export default function ModalAdd({
               Sell
             </Button>
           </div>
-          <div>
-            <input
+          <div className="relative">
+            <TextInput
               type="text"
-              placeholder="Search"
-              className=" w-full border border-gray-300 rounded-2xl text-center p-1.5 focus:outline-none focus:ring-2 focus:ring-blue-400 py-2"
-            />
-          </div>
-          <div className="relative flex flex-col sm:flex-row gap-4">
-            {/* <div className="w-full sm:basis-1/2"> */}
-            <input
-              type="number"
-              placeholder="Quantity"
+              placeholder="Search cryptocurrency..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full border border-gray-300 rounded-2xl text-center p-1.5 focus:outline-none focus:ring-2 focus:ring-blue-400"
-              // <Modal show={openModal} size="md" onClose={handleClose} dismissible>
-              //   <div className="bg-gray-900 text-white rounded-lg px-6 pt-4 pb-6">
-              //     <h3 className="text-center pt-4 font-semibold text-base">
-              //       {editTransaction ? 'Edit Transaction' : 'Add Transaction'}
-              //     </h3>
-              //     <ModalBody>
-              //       <div className="flex flex-col space-y-5">
-              //         {/* Transaction Type Toggle */}
-              //         <div className="flex justify-center flex-row gap-2">
-              //           <Button
-              //             className={`rounded-2xl ${
-              //               transactionType === 'buy'
-              //                 ? 'bg-green-600 hover:bg-green-700'
-              //                 : 'bg-gray-600 hover:bg-gray-700'
-              //             }`}
-              //             onClick={() => setTransactionType('buy')}
-              //           >
-              //             Buy
-              //           </Button>
-              //           <Button
-              //             className={`rounded-2xl ${
-              //               transactionType === 'sell'
-              //                 ? 'bg-red-600 hover:bg-red-700'
-              //                 : 'bg-gray-600 hover:bg-gray-700'
-              //             }`}
-              //             onClick={() => setTransactionType('sell')}
-              //           >
-              //             Sell
-              //           </Button>
-              //         </div>
-
-              //         {/* Search Coin */}
-              //         <div className="relative">
-              //           <input
-              //             type="text"
-              //             placeholder="Search cryptocurrency..."
-              //             value={search}
-              //             onChange={(e) => setSearch(e.target.value)}
-              //             className="w-full border border-gray-300 rounded-2xl text-center p-1.5 focus:outline-none focus:ring-2 focus:ring-blue-400 py-2 text-gray-900"
+              color=""
             />
             {showSearchResults && searchResults.length > 0 && (
               <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-48 overflow-y-auto">
@@ -257,23 +211,25 @@ export default function ModalAdd({
           {/* Quantity and Price */}
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="w-full sm:basis-1/2">
-              <input
+              <TextInput
                 type="number"
                 placeholder="Quantity"
+                color=""
                 value={quantity}
                 onChange={(e) => setQuantity(e.target.value)}
-                className="w-full border border-gray-300 rounded-2xl text-center p-1.5 focus:outline-none focus:ring-2 focus:ring-blue-400 text-gray-900"
+                // className="w-full border border-gray-300 rounded-2xl text-center p-1.5 focus:outline-none focus:ring-2 focus:ring-blue-400 text-gray-900"
                 step="0.00000001"
                 min="0"
               />
             </div>
             <div className="w-full sm:basis-1/2">
-              <input
+              <TextInput
                 type="number"
                 placeholder="Price Per Coin"
+                color=""
                 value={pricePerCoin}
                 onChange={(e) => setPricePerCoin(e.target.value)}
-                className="w-full border border-gray-300 rounded-2xl text-center p-1.5 focus:outline-none focus:ring-2 focus:ring-blue-400 text-gray-900"
+                // className="w-full border border-gray-300 rounded-2xl text-center p-1.5 focus:outline-none focus:ring-2 focus:ring-blue-400 text-gray-900"
                 step="0.01"
                 min="0"
               />
@@ -281,53 +237,24 @@ export default function ModalAdd({
           </div>
 
           {/* Date Picker */}
-          <div>
+          {/* <div>
             <input
               type="date"
               value={date.toISOString().split("T")[0]}
               onChange={(e) => setDate(new Date(e.target.value))}
               className="w-full border border-gray-300 rounded-2xl text-center p-1.5 focus:outline-none focus:ring-2 focus:ring-blue-400 text-gray-900"
             />
-          </div>
+          </div> */}
 
-          {/* Total Amount Display */}
-          <div className="bg-gray-800 p-3 rounded-2xl text-center">
-            <div className="text-sm text-gray-400">Total Amount</div>
-            <div className="text-lg font-semibold">
-              ${calculateTotal().toFixed(2)}
-            </div>
-            <div className="text-xs text-gray-500">
-              {transactionType === "buy"
-                ? "Amount to spend"
-                : "Amount to receive"}
-            </div>
-          </div>
-
-          {/* Submit Button */}
-          <div>
-            <Button
-              className={`w-full rounded-2xl ${
-                transactionType === "buy"
-                  ? "bg-green-600 hover:bg-green-700"
-                  : "bg-red-600 hover:bg-red-700"
-              }`}
-              onClick={handleSubmit}
-              disabled={loading || !selectedCoin || !quantity || !pricePerCoin}
-            >
-              {loading
-                ? "Processing..."
-                : editTransaction
-                ? `Update ${
-                    transactionType === "buy" ? "Buy" : "Sell"
-                  } Transaction`
-                : `Add ${
-                    transactionType === "buy" ? "Buy" : "Sell"
-                  } Transaction`}
-            </Button>
-          </div>
-        </div>
-        <div>
           <Datepicker
+            value={date}
+            onChange={(selectedDate: Date | null): void => {
+              if (selectedDate) {
+                setDate(selectedDate);
+              }
+            }}
+            // value={date.toISOString().split("T")[0]}
+            // onChange={(e) => setDate(new Date(e.target.value))}
             theme={{
               ...datePickerTheme,
               root: { ...datePickerTheme.root },
@@ -408,18 +335,167 @@ export default function ModalAdd({
               },
             }}
           />
+
+          {/* Total Amount Display */}
+          <div className="bg-gray-800 p-3 rounded-2xl text-center">
+            <div className="text-sm text-gray-400">Total Amount</div>
+            <div className="text-lg font-semibold">
+              ${calculateTotal().toFixed(2)}
+            </div>
+            <div className="text-xs text-gray-500">
+              {transactionType === "buy"
+                ? "Amount to spend"
+                : "Amount to receive"}
+            </div>
+          </div>
+
+          {/* Submit Button */}
+          <div>
+            <Button
+              className={`w-full rounded-2xl ${
+                transactionType === "buy"
+                  ? "bg-green-600 hover:bg-green-700"
+                  : "bg-red-600 hover:bg-red-700"
+              }`}
+              onClick={handleSubmit}
+              disabled={loading || !selectedCoin || !quantity || !pricePerCoin}
+            >
+              {loading
+                ? "Processing..."
+                : editTransaction
+                ? `Update ${
+                    transactionType === "buy" ? "Buy" : "Sell"
+                  } Transaction`
+                : `Add ${
+                    transactionType === "buy" ? "Buy" : "Sell"
+                  } Transaction`}
+            </Button>
+          </div>
         </div>
-        <div>
-          <input
-            type="text"
-            className="w-full py-4 border border-gray-300 rounded-2xl text-center p-1.5 focus:outline-none focus:ring-2 focus:ring-blue-400"
-          />
-        </div>
-        <div>
-          <Button className="w-full rounded-2xl">Add Transaction</Button>
-          {/* </div> */}
-        </div>
+        {/* <div> */}
+        {/* <Datepicker
+            theme={{
+              ...datePickerTheme,
+              root: { ...datePickerTheme.root },
+              popup: {
+                ...datePickerTheme.popup,
+                root: {
+                  ...datePickerTheme.popup.root,
+                  inner: "bg-gray-700 dark:bg-gray-700",
+                },
+                header: {
+                  ...datePickerTheme.popup.header,
+                  title: "text-white dark:text-white",
+                  selectors: {
+                    ...datePickerTheme.popup.header.selectors,
+                    button: {
+                      ...datePickerTheme.popup.header.selectors.button,
+                      base: "bg-gray-700 dark:bg-gray-700 text-white dark:text-white hover:bg-gray-600 dark:hover:bg-gray-600",
+                    },
+                  },
+                },
+                footer: {
+                  ...datePickerTheme.popup.footer,
+                  button: {
+                    ...datePickerTheme.popup.footer.button,
+                    today:
+                      "bg-primary-600 dark:bg-primary-600 hover:bg-primary-700 dark:hover:bg-primary-700",
+                    clear:
+                      "border-gray-600 dark:border-gray-600 bg-gray-700 dark:bg-gray-700 text-white dark:text-white hover:bg-gray-600 dark:hover:bg-gray-600",
+                  },
+                },
+              },
+              views: {
+                ...datePickerTheme.views,
+                days: {
+                  ...datePickerTheme.views.days,
+                  header: {
+                    ...datePickerTheme.views.days.header,
+                    title: "text-gray-400 dark:text-gray-400",
+                  },
+                  items: {
+                    ...datePickerTheme.views.days.items,
+                    item: {
+                      ...datePickerTheme.views.days.items.item,
+                      base: "text-white dark:text-white hover:bg-gray-600 dark:hover:bg-gray-600",
+                    },
+                  },
+                },
+                months: {
+                  ...datePickerTheme.views.months,
+                  items: {
+                    ...datePickerTheme.views.months.items,
+                    item: {
+                      ...datePickerTheme.views.months.items.item,
+                      base: "text-white dark:text-white hover:bg-gray-600 dark:hover:bg-gray-600",
+                    },
+                  },
+                },
+                years: {
+                  ...datePickerTheme.views.years,
+                  items: {
+                    ...datePickerTheme.views.years.items,
+                    item: {
+                      ...datePickerTheme.views.years.items.item,
+                      base: "text-white dark:text-white hover:bg-gray-600 dark:hover:bg-gray-600",
+                    },
+                  },
+                },
+                decades: {
+                  ...datePickerTheme.views.decades,
+                  items: {
+                    ...datePickerTheme.views.decades.items,
+                    item: {
+                      ...datePickerTheme.views.decades.items.item,
+                      base: "text-white dark:text-white hover:bg-gray-600 dark:hover:bg-gray-600",
+                    },
+                  },
+                },
+              },
+            }}
+          /> */}
+        {/* </div> */}
       </ModalBody>
     </Modal>
   );
 }
+
+// <Modal show={openModal} size="md" onClose={handleClose} dismissible>
+//   <div className="bg-gray-900 text-white rounded-lg px-6 pt-4 pb-6">
+//     <h3 className="text-center pt-4 font-semibold text-base">
+//       {editTransaction ? 'Edit Transaction' : 'Add Transaction'}
+//     </h3>
+//     <ModalBody>
+//       <div className="flex flex-col space-y-5">
+//         {/* Transaction Type Toggle */}
+//         <div className="flex justify-center flex-row gap-2">
+//           <Button
+//             className={`rounded-2xl ${
+//               transactionType === 'buy'
+//                 ? 'bg-green-600 hover:bg-green-700'
+//                 : 'bg-gray-600 hover:bg-gray-700'
+//             }`}
+//             onClick={() => setTransactionType('buy')}
+//           >
+//             Buy
+//           </Button>
+//           <Button
+//             className={`rounded-2xl ${
+//               transactionType === 'sell'
+//                 ? 'bg-red-600 hover:bg-red-700'
+//                 : 'bg-gray-600 hover:bg-gray-700'
+//             }`}
+//             onClick={() => setTransactionType('sell')}
+//           >
+//             Sell
+//           </Button>
+//         </div>
+
+//         {/* Search Coin */}
+//         <div className="relative">
+//           <input
+//             type="text"
+//             placeholder="Search cryptocurrency..."
+//             value={search}
+//             onChange={(e) => setSearch(e.target.value)}
+//             className="w-full border border-gray-300 rounded-2xl text-center p-1.5 focus:outline-none focus:ring-2 focus:ring-blue-400 py-2 text-gray-900"

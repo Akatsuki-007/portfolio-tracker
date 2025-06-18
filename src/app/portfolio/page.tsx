@@ -17,7 +17,6 @@ export default function portfolioPage() {
   const [portfolioCreated, setPortfolioCreated] = useState(false);
   const [portfolioData, setPortfolioData] = useState({
     name: "test",
-    value: "$0",
     avatar: "green",
   });
   const [openModal, setOpenModal] = useState(false);
@@ -33,7 +32,6 @@ export default function portfolioPage() {
     setPortfolioCreated(true);
     setPortfolioData({
       name: portfolioName || "test",
-      value: "$0",
       avatar: "green", // You can randomize this or let users select in the modal
     });
     setPortfolioName("");
@@ -49,7 +47,7 @@ export default function portfolioPage() {
   if (portfolioCreated) {
     return (
       <>
-        <div className="flex flex-col min-h-screen p-4 md:p-6">
+        <div className="container mx-auto flex flex-col min-h-screen p-4 md:p-6">
           {/* Sidebar and Content Layout */}
           <div className="flex flex-col md:flex-row gap-6">
             {/* Left Sidebar */}
@@ -92,9 +90,6 @@ export default function portfolioPage() {
                       <h3 className="text-white font-medium">
                         {portfolioData.name}
                       </h3>
-                      <p className="text-gray-400 text-sm">
-                        {portfolioData.value}
-                      </p>
                     </div>
                   </div>
                 </div>
@@ -126,12 +121,6 @@ export default function portfolioPage() {
                       {portfolioData.name}
                     </h1>
                   </div>
-                </div>
-
-                <div className="flex items-center space-x-3">
-                  <h2 className="text-3xl text-white font-bold">
-                    {portfolioData.value}
-                  </h2>
                 </div>
 
                 <div className="flex items-center space-x-2">
@@ -267,7 +256,7 @@ export default function portfolioPage() {
   return (
     <>
       {/* Hero Section */}
-      <div className="relative overflow-x-auto h-[calc(100vh-62px)] shadow-md sm:rounded-lg">
+      <div className="container mx-auto relative overflow-x-auto h-[calc(100vh-62px)] shadow-md sm:rounded-lg">
         <div className="text-center mb-12">
           <div className="mb-8">
             <Image
