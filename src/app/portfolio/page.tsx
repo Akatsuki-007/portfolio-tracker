@@ -1,46 +1,46 @@
-'use client';
-import noPortfolio from '@/app/assets/no-portfolio.png';
-import noManualPortfolio from '@/app/assets/no-manual-portfolio.png';
-import Image from 'next/image';
-import { useState } from 'react';
-import ModalAdd from '../../components/modal-add';
+"use client";
+import noPortfolio from "@/app/assets/no-portfolio.png";
+import noManualPortfolio from "@/app/assets/no-manual-portfolio.png";
+import Image from "next/image";
+import { useState } from "react";
+import ModalAdd from "../../components/modal-add";
 import RowTable from "@/app/components/row-table";
 
 export default function portfolioPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [portfolioName, setPortfolioName] = useState('');
+  const [portfolioName, setPortfolioName] = useState("");
   const [portfolioCreated, setPortfolioCreated] = useState(false);
   const [portfolioData, setPortfolioData] = useState({
-    name: 'test',
-    value: '$0',
-    avatar: 'green',
+    name: "test",
+    value: "$0",
+    avatar: "green",
   });
-  const [openModal, setOpenModal] = useState(false);
+  const [openModal, setOpenModal] = useState(true);
 
   const handleCreatePortfolio = () => {
     // Handle portfolio creation logic here
-    console.log('Creating portfolio:', { portfolioName });
+    console.log("Creating portfolio:", { portfolioName });
     setIsModalOpen(false);
     setPortfolioCreated(true);
     setPortfolioData({
-      name: portfolioName || 'test',
-      value: '$0',
-      avatar: 'green', // You can randomize this or let users select in the modal
+      name: portfolioName || "test",
+      value: "$0",
+      avatar: "green", // You can randomize this or let users select in the modal
     });
-    setPortfolioName('');
+    setPortfolioName("");
   };
 
   const handleAddTransaction = () => {
     // Handle add transaction logic here
-    setOpenModal(true)
-    console.log(openModal)
-    console.log('Adding transaction');
+    setOpenModal(true);
+    console.log(openModal);
+    console.log("Adding transaction");
   };
 
   if (portfolioCreated) {
     return (
       <>
-        <div className="flex flex-col min-h-screen bg-gray-900 p-4 md:p-6">
+        <div className="flex flex-col min-h-screen p-4 md:p-6">
           {/* Sidebar and Content Layout */}
           <div className="flex flex-col md:flex-row gap-6">
             {/* Left Sidebar */}
@@ -48,7 +48,9 @@ export default function portfolioPage() {
               <div className="flex flex-col space-y-4">
                 {/* My Portfolio Header */}
                 <div className="flex justify-between items-center">
-                  <h2 className="text-xl text-white font-medium">My portfolio</h2>
+                  <h2 className="text-xl text-white font-medium">
+                    My portfolio
+                  </h2>
                   <button className="text-gray-400 hover:text-white">
                     <svg
                       className="w-5 h-5"
@@ -239,8 +241,12 @@ export default function portfolioPage() {
                       <td>$104,276.80</td>
                       <td>460.09</td>
                       <td>
-                        <button className="px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium rounded-md transition-colors mr-2">Add</button>
-                        <button className="px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium rounded-md transition-colors">Delete</button>
+                        <button className="px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium rounded-md transition-colors mr-2">
+                          Add
+                        </button>
+                        <button className="px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium rounded-md transition-colors">
+                          Delete
+                        </button>
                       </td>
                     </tr>
                   </tbody>
@@ -249,7 +255,6 @@ export default function portfolioPage() {
             </div>
           </div>
         </div>
-        <ModalAdd openModal={openModal} setOpenModal={setOpenModal} />
       </>
     );
   }
@@ -257,7 +262,7 @@ export default function portfolioPage() {
   return (
     <>
       {/* Hero Section */}
-      <div className="relative m-4 overflow-x-auto min-h-screen bg-black shadow-md sm:rounded-lg">
+      <div className="relative overflow-x-auto h-[calc(100vh-62px)] shadow-md sm:rounded-lg">
         <div className="text-center mb-12">
           <div className="mb-8">
             <Image
@@ -386,6 +391,7 @@ export default function portfolioPage() {
           </div>
         </div>
       )}
+      <ModalAdd openModal={openModal} setOpenModal={setOpenModal} />
     </>
   );
 }

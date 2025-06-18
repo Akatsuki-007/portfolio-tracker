@@ -11,6 +11,7 @@ import {
   Popover,
   popoverTheme,
   Modal,
+  modalTheme,
   ModalHeader,
   ModalBody,
   HR,
@@ -266,6 +267,20 @@ function Navbar() {
         size="md"
         popup
         onClose={() => setOpenPopup("")}
+        theme={{
+          ...modalTheme,
+          root: {
+            ...modalTheme.root,
+            show: {
+              ...modalTheme.root.show,
+              on: "bg-gray-900/80 dark:bg-gray-900/80",
+            },
+          },
+          content: {
+            ...modalTheme.content,
+            inner: "bg-gray-700 dark:bg-gray-700",
+          },
+        }}
       >
         <ModalHeader />
         <ModalBody>
@@ -282,7 +297,7 @@ function Navbar() {
                 clipRule="evenodd"
               />
             </svg>
-            <h1 className="text-2xl font-semibold dark:text-white text-gray-900 mb-2">
+            <h1 className="text-2xl font-semibold dark:text-white text-white mb-2">
               You successfully logged in!
             </h1>
             <p className="text-sm font-normal text-gray-500 dark:text-gray-400">
@@ -290,7 +305,7 @@ function Navbar() {
             </p>
             <Button
               color="blue"
-              className="cursor-pointer w-full mt-8"
+              className="cursor-pointer w-full mt-8 bg-blue-600 dark:bg-blue-600 hover:bg-blue-700 dark:hover:bg-blue-700"
               onClick={() => setOpenPopup("")}
             >
               Yes, I'm sure
