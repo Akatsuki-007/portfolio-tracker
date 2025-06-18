@@ -5,8 +5,13 @@ import Image from 'next/image';
 import { useState } from 'react';
 import ModalAdd from '../../components/modal-add';
 import RowTable from "@/app/components/row-table";
+import TransactionList from '@/components/transaction-list';
+import PortfolioSummary from '@/components/portfolio-summary';
+import { useAppSelector, useAppDispatch } from '@/lib/hooks';
+import { addSampleData } from '@/lib/portfolio/portfolio-slicer';
 
 export default function portfolioPage() {
+  const dispatch = useAppDispatch();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [portfolioName, setPortfolioName] = useState('');
   const [portfolioCreated, setPortfolioCreated] = useState(false);
@@ -16,6 +21,10 @@ export default function portfolioPage() {
     avatar: 'green',
   });
   const [openModal, setOpenModal] = useState(false);
+  
+  // Get portfolio data from Redux
+  const { portfolio } = useAppSelector((state) => state.portfolio);
+  const hasTransactions = portfolio.length > 0;
 
   const handleCreatePortfolio = () => {
     // Handle portfolio creation logic here
@@ -171,81 +180,78 @@ export default function portfolioPage() {
                 </div>
               </div>
 
-              {/* Empty Portfolio State */}
-              <div className="flex flex-col items-center justify-center py-16">
-                <div className="mb-6">
-                  <Image
-                    src={noManualPortfolio}
-                    alt="Empty portfolio"
-                    width={200}
-                    height={200}
-                    className="object-contain"
-                    // If you don't have this image, replace with the following:
-                    // This is a fallback until you can add the actual image
-                    onError={(e) => {
-                      e.currentTarget.onerror = null;
-                      e.currentTarget.src =
-                        "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200'%3E%3Crect width='200' height='200' fill='%234263EB'/%3E%3Cpath d='M50,150 L90,90 L130,130 L170,70' stroke='%2361E224' stroke-width='10' fill='none'/%3E%3Ccircle cx='160' cy='40' r='20' fill='%23FFCC00'/%3E%3C/svg%3E";
-                    }}
-                  />
+              {/* Portfolio Content */}
+              {hasTransactions ? (
+                <div className="space-y-6">
+                  {/* Portfolio Summary */}
+                  <PortfolioSummary />
+                  
+                  {/* Transaction List */}
+                  <TransactionList />
                 </div>
-                <h2 className="text-3xl text-white font-bold mb-2">
-                  This portfolio needs some final touches...
-                </h2>
-                <p className="text-gray-400 mb-8">Add a coin to get started</p>
-                <button
-                  onClick={handleAddTransaction}
-                  className="flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors"
-                >
-                  <svg
-                    className="w-5 h-5"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
-                      clipRule="evenodd"
+              ) : (
+                /* Empty Portfolio State */
+                <div className="flex flex-col items-center justify-center py-16">
+                  <div className="mb-6">
+                    <Image
+                      src={noManualPortfolio}
+                      alt="Empty portfolio"
+                      width={200}
+                      height={200}
+                      className="object-contain"
+                      // If you don't have this image, replace with the following:
+                      // This is a fallback until you can add the actual image
+                      onError={(e) => {
+                        e.currentTarget.onerror = null;
+                        e.currentTarget.src =
+                          "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200'%3E%3Crect width='200' height='200' fill='%234263EB'/%3E%3Cpath d='M50,150 L90,90 L130,130 L170,70' stroke='%2361E224' stroke-width='10' fill='none'/%3E%3Ccircle cx='160' cy='40' r='20' fill='%23FFCC00'/%3E%3C/svg%3E";
+                      }}
                     />
-                  </svg>
-                  <span>Add Transaction</span>
-                </button>
-              </div>
-
-              {/* Cryptocurrency Table */}
-              <div className="relative m-4 overflow-x-auto bg-black shadow-md sm:rounded-lg">
-                <table className="w-full text-sm text-left text-gray-300">
-                  <thead className="text-sm bg-gray-700">
-                    <tr>
-                      <th className="p-2.5">Name</th>
-                      <th className="p-2.5">Price</th>
-                      <th className="p-2.5">1h %</th>
-                      <th className="p-2.5">24h %</th>
-                      <th className="p-2.5">7d %</th>
-                      <th className="p-2.5">Holdings</th>
-                      <th className="p-2.5">Avg. Buy Price</th>
-                      <th className="p-2.5">Profit/Loss</th>
-                      <th className="p-2.5">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>BTC</td>
-                      <td>$104,276.80</td>
-                      <td>0.63 %</td>
-                      <td>2.9 %</td>
-                      <td>4.36 %</td>
-                      <td>$104,276.80</td>
-                      <td>$104,276.80</td>
-                      <td>460.09</td>
-                      <td>
-                        <button className="px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium rounded-md transition-colors mr-2">Add</button>
-                        <button className="px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium rounded-md transition-colors">Delete</button>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+                  </div>
+                  <h2 className="text-3xl text-white font-bold mb-2">
+                    This portfolio needs some final touches...
+                  </h2>
+                  <p className="text-gray-400 mb-8">Add a coin to get started</p>
+                  <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                    <button
+                      onClick={handleAddTransaction}
+                      className="flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors"
+                    >
+                      <svg
+                        className="w-5 h-5"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                      <span>Add Transaction</span>
+                    </button>
+                    <button
+                      onClick={() => dispatch(addSampleData())}
+                      className="flex items-center space-x-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors"
+                    >
+                      <svg
+                        className="w-5 h-5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M13 10V3L4 14h7v7l9-11h-7z"
+                        />
+                      </svg>
+                      <span>Load Sample Data</span>
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>

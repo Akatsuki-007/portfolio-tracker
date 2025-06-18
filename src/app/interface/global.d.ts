@@ -16,10 +16,13 @@ interface User {
 }
 
 interface Transaction {
+  id?: string;
   quantity: number;
   spend: number;
   receive: number;
   date: string;
   type: 'buy' | 'sell';
   symbol: string;
+  coinName: string;
+  pricePerCoin: number;
 }
