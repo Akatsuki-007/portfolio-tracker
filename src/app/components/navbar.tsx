@@ -308,7 +308,7 @@ function Navbar() {
               className="cursor-pointer w-full mt-8 bg-blue-600 dark:bg-blue-600 hover:bg-blue-700 dark:hover:bg-blue-700"
               onClick={() => setOpenPopup("")}
             >
-              Yes, I'm sure
+              OK
             </Button>
           </div>
         </ModalBody>
