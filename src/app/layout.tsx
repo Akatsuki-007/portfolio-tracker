@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Nunito } from "next/font/google";
 import "./globals.css";
 import StoreProvider from "@/app/store-provider";
-import { StagewiseToolbar } from "@stagewise/toolbar-next";
+// import { StagewiseToolbar } from "@stagewise/toolbar-next";
 import Navbar from "@/app/components/navbar";
-import { ReactPlugin } from "@stagewise-plugins/react";
+// import { ReactPlugin } from "@stagewise-plugins/react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -36,11 +36,11 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${nunito.variable} antialiased`}
       >
-        <StagewiseToolbar
+        {/* <StagewiseToolbar
           config={{
             plugins: [ReactPlugin],
           }}
-        />
+        /> */}
 
         <StoreProvider>
           <Navbar />
