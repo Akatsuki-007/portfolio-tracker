@@ -158,7 +158,7 @@ export default function ModalAdd({
         header: {
           ...modalTheme.header,
           base: "border-gray-600 dark:border-gray-600",
-          title: "text-white dark:text-white",
+          title: "text-white dark:text-white ml-auto",
           close: {
             ...modalTheme.header.close,
             base: "hover:bg-gray-600 dark:hover:bg-gray-600 hover:text-white dark:hover:text-white",
