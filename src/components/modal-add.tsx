@@ -194,14 +194,22 @@ export default function ModalAdd({
         <div className="text-white rounded-lg px-6 pt-4 pb-6 space-y-4">
           <div className="flex justify-center flex-row gap-2">
             <Button
-              className="cursor-pointer w-full bg-blue-600 dark:bg-blue-600 hover:bg-blue-700 dark:hover:bg-blue-700"
+              className={`cursor-pointer w-full ${
+                transactionType === "buy"
+                  ? "bg-blue-600 dark:bg-blue-600 hover:bg-blue-700 dark:hover:bg-blue-700"
+                  : "bg-gray-500 dark:bg-gray-500 hover:bg-blue-700 dark:hover:bg-blue-700"
+              }`}
               onClick={() => setTransactionType("buy")}
             >
               Buy
             </Button>
             <Button
               color="red"
-              className="cursor-pointer w-full bg-red-600 dark:bg-red-600 hover:bg-red-700 dark:hover:bg-red-700"
+              className={`cursor-pointer w-full ${
+                transactionType === "sell"
+                  ? "bg-red-600 dark:bg-red-600 hover:bg-red-700 dark:hover:bg-red-700"
+                  : "bg-gray-500 dark:bg-gray-500 hover:bg-red-700 dark:hover:bg-red-700"
+              }`}
               onClick={() => setTransactionType("sell")}
             >
               Sell
@@ -216,15 +224,15 @@ export default function ModalAdd({
               color=""
             />
             {showSearchResults && searchResults.length > 0 && (
-              <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-48 overflow-y-auto">
+              <div className="absolute z-10 w-full mt-1 bg-gray-600 dark:bg-gray-600 border border-gray-300 rounded-lg shadow-lg max-h-48 overflow-y-auto">
                 {searchResults.map((coin) => (
                   <div
                     key={coin.id}
-                    className="p-2 hover:bg-gray-100 cursor-pointer text-gray-900 border-b last:border-b-0"
+                    className="p-2 hover:bg-gray-700 cursor-pointer text-white border-b last:border-b-0"
                     onClick={() => handleCoinSelect(coin)}
                   >
                     <div className="font-medium">{coin.name}</div>
-                    <div className="text-sm text-gray-600">{coin.symbol}</div>
+                    <div className="text-sm text-gray-200">{coin.symbol}</div>
                   </div>
                 ))}
               </div>

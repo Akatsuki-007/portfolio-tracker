@@ -1,11 +1,12 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
+import Image from "next/image";
 
 const CoinDetailPage = () => {
   const params = useParams();
-  const [coinInfo, setCoinInfo] = useState<any>(null);
-  const [coinPrice, setCoinPrice] = useState<any>(null);
+  const [coinInfo, setCoinInfo] = useState<Record<string, unknown> | null>(null);
+  const [coinPrice, setCoinPrice] = useState<Record<string, unknown> | null>(null);
   //   const [sparklineData, setSparklineData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -101,10 +102,12 @@ const CoinDetailPage = () => {
     <div className="container mx-auto p-4">
       <div className="flex items-center mb-4">
         {" "}
-        <img
+        <Image
           src={`https://s2.coinmarketcap.com/static/img/coins/64x64/${coinInfoData?.id}.png`}
-          alt={coinInfoData?.name}
-          className="w-16 h-16 mr-4"
+          alt={coinInfoData?.name || "Coin image"}
+          className="mr-4"
+          width={64}
+          height={64}
         />
         <div>
           {" "}

@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { deleteTransaction } from '@/lib/portfolio/portfolio-slicer';
 import ModalAdd from './modal-add';
+import { Modal, Button, ModalBody, ModalHeader, modalTheme } from 'flowbite-react';
 
 interface TransactionListProps {
   className?: string;
@@ -13,16 +14,30 @@ export default function TransactionList({ className = '' }: TransactionListProps
   const { portfolio } = useAppSelector((state) => state.portfolio);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [editingTransaction, setEditingTransaction] = useState<Transaction | null>(null);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [transactionToDelete, setTransactionToDelete] = useState<string | null>(null);
 
   const handleEdit = (transaction: Transaction) => {
     setEditingTransaction(transaction);
     setEditModalOpen(true);
   };
 
-  const handleDelete = (transactionId: string) => {
-    if (window.confirm('Are you sure you want to delete this transaction?')) {
-      dispatch(deleteTransaction(transactionId));
+  const handleDeleteClick = (transactionId: string) => {
+    setTransactionToDelete(transactionId);
+    setDeleteModalOpen(true);
+  };
+
+  const handleDeleteConfirm = () => {
+    if (transactionToDelete) {
+      dispatch(deleteTransaction(transactionToDelete));
+      setDeleteModalOpen(false);
+      setTransactionToDelete(null);
     }
+  };
+
+  const handleDeleteCancel = () => {
+    setDeleteModalOpen(false);
+    setTransactionToDelete(null);
   };
 
   const formatDate = (dateString: string) => {
@@ -77,7 +92,7 @@ export default function TransactionList({ className = '' }: TransactionListProps
         <div className="p-4 border-b border-gray-700">
           <h3 className="text-white text-lg font-medium">Transaction History</h3>
         </div>
-        
+
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead className="bg-gray-750">
@@ -96,11 +111,10 @@ export default function TransactionList({ className = '' }: TransactionListProps
                 <tr key={transaction.id} className="border-b border-gray-700 hover:bg-gray-750">
                   <td className="p-4">
                     <span
-                      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                        transaction.type === 'buy'
+                      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${transaction.type === 'buy'
                           ? 'bg-green-100 text-green-800'
                           : 'bg-red-100 text-red-800'
-                      }`}
+                        }`}
                     >
                       {transaction.type.toUpperCase()}
                     </span>
@@ -142,7 +156,7 @@ export default function TransactionList({ className = '' }: TransactionListProps
                         </svg>
                       </button>
                       <button
-                        onClick={() => transaction.id && handleDelete(transaction.id)}
+                        onClick={() => transaction.id && handleDeleteClick(transaction.id)}
                         className="text-red-400 hover:text-red-300 p-1"
                         title="Delete transaction"
                       >
@@ -163,6 +177,79 @@ export default function TransactionList({ className = '' }: TransactionListProps
           </table>
         </div>
       </div>
+
+      {/* Delete Confirmation Modal */}
+      <Modal
+        show={deleteModalOpen}
+        onClose={handleDeleteCancel}
+        position="center"
+        size="md"
+        theme={{
+          ...modalTheme,
+          root: {
+            ...modalTheme.root,
+            show: {
+              ...modalTheme.root.show,
+              on: "bg-gray-900/80 dark:bg-gray-900/80",
+            },
+          },
+          header: {
+            ...modalTheme.header,
+            base: "border-gray-600 dark:border-gray-600",
+            title: "text-white dark:text-white ml-auto",
+            close: {
+              ...modalTheme.header.close,
+              base: "hover:bg-gray-600 dark:hover:bg-gray-600 hover:text-white dark:hover:text-white",
+            },
+          },
+          content: {
+            ...modalTheme.content,
+            inner: "bg-gray-700 dark:bg-gray-700",
+          },
+        }}
+      >
+        <ModalHeader>
+          Delete?
+        </ModalHeader>
+
+        <ModalBody>
+          <div className="text-center">
+            <svg
+              className="mx-auto mb-4 h-14 w-14 text-red-400"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"
+              />
+            </svg>
+            <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+              Are you sure you want to delete this transaction?
+            </h3>
+            <p className="mb-5 text-sm text-gray-400">
+              This action cannot be undone and will permanently remove the transaction from your portfolio.
+            </p>
+            <div className="flex justify-center gap-4">
+              <Button
+                color="red"
+                onClick={handleDeleteConfirm}
+              >
+                Yes, Delete
+              </Button>
+              <Button
+                color="green"
+                onClick={handleDeleteCancel}
+              >
+                Cancel
+              </Button>
+            </div>
+          </div>
+        </ModalBody>
+      </Modal>
 
       {/* Edit Modal */}
       <ModalAdd

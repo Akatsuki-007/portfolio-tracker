@@ -9,8 +9,9 @@ import TransactionList from "@/components/transaction-list";
 import PortfolioSummary from "@/components/portfolio-summary";
 import { useAppSelector, useAppDispatch } from "@/lib/hooks";
 import { addSampleData } from "@/lib/portfolio/portfolio-slicer";
+import { Dropdown, Modal, modalTheme, Button, TextInput, ModalHeader, ModalBody, ModalFooter, DropdownItem } from "flowbite-react";
 
-export default function portfolioPage() {
+export default function PortfolioPage() {
   const dispatch = useAppDispatch();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [portfolioName, setPortfolioName] = useState("");
@@ -20,6 +21,9 @@ export default function portfolioPage() {
     avatar: "green",
   });
   const [openModal, setOpenModal] = useState(false);
+  const [editPortfolioModal, setEditPortfolioModal] = useState(false);
+  const [deletePortfolioModal, setDeletePortfolioModal] = useState(false);
+  const [editedPortfolioName, setEditedPortfolioName] = useState("");
 
   // Get portfolio data from Redux
   const { portfolio } = useAppSelector((state) => state.portfolio);
@@ -44,58 +48,41 @@ export default function portfolioPage() {
     console.log("Adding transaction");
   };
 
+  const handleEditPortfolio = () => {
+    setEditedPortfolioName(portfolioData.name);
+    setEditPortfolioModal(true);
+  };
+
+  const handleSavePortfolioEdit = () => {
+    if (editedPortfolioName.trim()) {
+      setPortfolioData({
+        ...portfolioData,
+        name: editedPortfolioName.trim()
+      });
+      setEditPortfolioModal(false);
+      setEditedPortfolioName("");
+    }
+  };
+
+  const handleDeletePortfolio = () => {
+    setDeletePortfolioModal(true);
+  };
+
+  const handleConfirmDelete = () => {
+    // Reset to initial state - showing the portfolio creation screen
+    setPortfolioCreated(false);
+    setPortfolioData({ name: "test", avatar: "green" });
+    setDeletePortfolioModal(false);
+    // You might also want to clear the Redux store here
+    // dispatch(clearPortfolio()); // if you have this action
+  };
+
   if (portfolioCreated) {
     return (
       <>
         <div className="container mx-auto flex flex-col min-h-screen p-4 md:p-6">
           {/* Sidebar and Content Layout */}
           <div className="flex flex-col md:flex-row gap-6">
-            {/* Left Sidebar */}
-            <div className="w-full md:w-80 flex-shrink-0">
-              <div className="flex flex-col space-y-4">
-                {/* My Portfolio Header */}
-                <div className="flex justify-between items-center">
-                  <h2 className="text-xl text-white font-medium">
-                    My portfolio
-                  </h2>
-                  <button className="text-gray-400 hover:text-white">
-                    <svg
-                      className="w-5 h-5"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
-                    </svg>
-                  </button>
-                </div>
-                {/* Portfolio Item */}
-                <div className="bg-gray-800 rounded-xl p-4 hover:bg-gray-750 transition-colors cursor-pointer">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
-                      <svg
-                        className="w-5 h-5 text-white"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                        />
-                      </svg>
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="text-white font-medium">
-                        {portfolioData.name}
-                      </h3>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
             {/* Main Content */}
             <div className="flex-grow">
               {/* Portfolio Header */}
@@ -142,32 +129,38 @@ export default function portfolioPage() {
                     <span>Add Transaction</span>
                   </button>
 
-                  <button className="flex items-center space-x-2 bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-colors">
-                    <svg
-                      className="w-5 h-5"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
-                      />
-                    </svg>
-                    <span>Export</span>
-                  </button>
-
-                  <button className="flex items-center justify-center bg-gray-700 hover:bg-gray-600 text-white w-10 h-10 rounded-lg transition-colors">
-                    <svg
-                      className="w-6 h-6"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
-                    </svg>
-                  </button>
+                  <Dropdown
+                    label=""
+                    dismissOnClick={true}
+                    renderTrigger={() => (
+                      <button className="flex items-center justify-center bg-gray-700 hover:bg-gray-600 text-white w-10 h-10 rounded-lg transition-colors">
+                        <svg
+                          className="w-6 h-6"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                        >
+                          <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
+                        </svg>
+                      </button>
+                    )}
+                  >
+                    <DropdownItem onClick={handleEditPortfolio}>
+                      <div className="flex items-center space-x-2">
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                        </svg>
+                        <span>Edit Portfolio</span>
+                      </div>
+                    </DropdownItem>
+                    <DropdownItem onClick={handleDeletePortfolio}>
+                      <div className="flex items-center space-x-2 text-red-500">
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                        <span>Delete Portfolio</span>
+                      </div>
+                    </DropdownItem>
+                  </Dropdown>
                 </div>
               </div>
 
@@ -249,6 +242,114 @@ export default function portfolioPage() {
           </div>
         </div>
         <ModalAdd openModal={openModal} setOpenModal={setOpenModal} />
+
+        {/* Edit Portfolio Modal */}
+        <Modal size="md" show={editPortfolioModal} onClose={() => setEditPortfolioModal(false)}
+          theme={{
+                  ...modalTheme,
+                  root: {
+                    ...modalTheme.root,
+                    show: {
+                      ...modalTheme.root.show,
+                      on: "bg-gray-900/80 dark:bg-gray-900/80",
+                    },
+                  },
+                  header: {
+                    ...modalTheme.header,
+                    base: "border-gray-600 dark:border-gray-600",
+                    title: "text-white dark:text-white ml-auto",
+                    close: {
+                      ...modalTheme.header.close,
+                      base: "hover:bg-gray-600 dark:hover:bg-gray-600 hover:text-white dark:hover:text-white",
+                    },
+                  },
+                  content: {
+                    ...modalTheme.content,
+                    inner: "bg-gray-700 dark:bg-gray-700",
+                  },
+                }}>
+          <ModalHeader>Edit Portfolio</ModalHeader>
+          <ModalBody>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Portfolio Name
+                </label>
+                <TextInput
+                  value={editedPortfolioName}
+                  onChange={(e) => setEditedPortfolioName(e.target.value)}
+                  placeholder="Enter portfolio name"
+                  maxLength={24}
+                />
+                <p className="text-gray-500 text-xs mt-1">
+                  {editedPortfolioName.length}/24 characters
+                </p>
+              </div>
+            </div>
+          </ModalBody>
+          <ModalFooter>
+            <Button className="hover:bg-red-600 dark:hover:bg-red-600 cursor-pointer" color="gray" onClick={() => setEditPortfolioModal(false)}>
+              Cancel
+            </Button>
+            <Button 
+              color="blue" 
+              onClick={handleSavePortfolioEdit}
+              disabled={!editedPortfolioName.trim()}
+              className="cursor-pointer"
+            >
+              Save Changes
+            </Button>
+          </ModalFooter>
+        </Modal>
+
+        {/* Delete Portfolio Modal */}
+        <Modal size="md" show={deletePortfolioModal} onClose={() => setDeletePortfolioModal(false)}
+          theme={{
+                  ...modalTheme,
+                  root: {
+                    ...modalTheme.root,
+                    show: {
+                      ...modalTheme.root.show,
+                      on: "bg-gray-900/80 dark:bg-gray-900/80",
+                    },
+                  },
+                  header: {
+                    ...modalTheme.header,
+                    base: "border-gray-600 dark:border-gray-600",
+                    title: "text-white dark:text-white text-center w-full",
+                    close: {
+                      ...modalTheme.header.close,
+                      base: "hover:bg-gray-600 dark:hover:bg-gray-600 hover:text-white dark:hover:text-white",
+                    },
+                  },
+                  content: {
+                    ...modalTheme.content,
+                    inner: "bg-gray-700 dark:bg-gray-700",
+                  },
+                }}>
+          <ModalHeader>Delete Portfolio?</ModalHeader>
+          <ModalBody>
+            <div className="text-center">
+              <svg className="mx-auto mb-4 w-14 h-14 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.502 0L4.268 16.5c-.77.833.192 2.5 1.732 2.5z" />
+              </svg>
+              <h3 className="mb-5 text-lg font-normal text-white">
+                Are you sure you want to delete the portfolio "{portfolioData.name}"?
+              </h3>
+              <p className="text-sm text-red-500 mb-4">
+                This action cannot be undone. All transactions will be permanently deleted.
+              </p>
+            </div>
+          </ModalBody>
+          <ModalFooter>
+            <Button className="hover:bg-blue-600 dark:hover:bg-blue-600 cursor-pointer" color="gray" onClick={() => setDeletePortfolioModal(false)}>
+              Cancel
+            </Button>
+            <Button className="cursor-pointer" color="red" onClick={handleConfirmDelete}>
+              Yes, Delete Portfolio
+            </Button>
+          </ModalFooter>
+        </Modal>
       </>
     );
   }
@@ -269,7 +370,7 @@ export default function portfolioPage() {
             />
           </div>
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
-            Let's get started with your first portfolio!
+            Let&apos;s get started with your first portfolio!
           </h1>
           <p className="text-gray-400 text-lg md:text-xl">
             Track profits, losses and valuation all in one place.
