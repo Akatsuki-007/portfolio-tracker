@@ -87,11 +87,29 @@ export default function ModalAdd({
     const timeoutId = setTimeout(searchCoins, 300);
     return () => clearTimeout(timeoutId);
   }, [search, selectedCoin]);
-
-  const handleCoinSelect = (coin: SearchData) => {
+  const handleCoinSelect = async (coin: SearchData) => {
     setSelectedCoin(coin);
     setSearch(coin.name);
     setShowSearchResults(false);
+
+    // Fetch current price for the selected coin
+    try {
+      const response = await fetch(`/api/price?symbol=${coin.symbol}`);
+      const data = await response.json();
+
+      if (
+        data &&
+        data.data &&
+        data.data[coin.symbol] &&
+        data.data[coin.symbol][0]
+      ) {
+        const currentPrice = data.data[coin.symbol][0].quote.USD.price;
+        setPricePerCoin(currentPrice.toFixed(2));
+      }
+    } catch (error) {
+      console.error("Error fetching current price:", error);
+      // Don't set price if there's an error, let user enter manually
+    }
   };
 
   const calculateTotal = () => {
