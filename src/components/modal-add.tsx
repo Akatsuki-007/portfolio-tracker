@@ -1,6 +1,7 @@
 import {
   Modal,
   modalTheme,
+  ModalHeader,
   ModalBody,
   Datepicker,
   datePickerTheme,
@@ -154,15 +155,23 @@ export default function ModalAdd({
             on: "bg-gray-900/80 dark:bg-gray-900/80",
           },
         },
+        header: {
+          ...modalTheme.header,
+          base: "border-gray-600 dark:border-gray-600",
+          title: "text-white dark:text-white",
+          close: {
+            ...modalTheme.header.close,
+            base: "hover:bg-gray-600 dark:hover:bg-gray-600 hover:text-white dark:hover:text-white",
+          },
+        },
         content: {
           ...modalTheme.content,
           inner: "bg-gray-700 dark:bg-gray-700",
         },
       }}
     >
-      <h3 className="text-center pt-4 font-semibold text-base">
-        Add Transaction
-      </h3>
+      <ModalHeader>Add Transaction</ModalHeader>
+      {/* <h3 className="text-center pt-4 font-semibold text-base"></h3> */}
       <ModalBody>
         <div className="text-white rounded-lg px-6 pt-4 pb-6 space-y-4">
           <div className="flex justify-center flex-row gap-2">
@@ -259,6 +268,7 @@ export default function ModalAdd({
             }}
             // value={date.toISOString().split("T")[0]}
             // onChange={(e) => setDate(new Date(e.target.value))}
+            color=""
             theme={{
               ...datePickerTheme,
               root: { ...datePickerTheme.root },
