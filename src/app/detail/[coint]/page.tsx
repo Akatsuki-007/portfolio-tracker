@@ -146,29 +146,19 @@ const CoinDetailPage = () => {
           </p>
         </div>
       </div>
-      {/* <div> */}
-      {/* <h2 className="text-xl font-semibold mb-2">Price Chart (7d)</h2> */}
-      {/* <SparkLineChart
-          data={sparkline.quote.USD.sparkline}
-          categories={["price"]}
-          index={"timestamp"}
-          colors={["blue"]}
-          className="h-40"
-        /> */}
-      {/* </div> */}
 
       {/* Description and Details Section */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
         {/* Description */}
         <div className="lg:col-span-2">
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+          <div className="bg-gray-800 dark:bg-gray-800 rounded-lg shadow-md p-6">
             <h2 className="text-2xl font-semibold mb-4">
               About {coinInfoData?.name}
             </h2>
             <div className="space-y-4">
               {coinInfoData?.description && (
                 <div>
-                  <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                  <p className="text-gray-300 dark:text-gray-300 leading-relaxed">
                     {coinInfoData.description}
                   </p>
                 </div>
@@ -176,20 +166,20 @@ const CoinDetailPage = () => {
 
               {/* Key Information */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
-                <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
-                  <h3 className="font-semibold text-gray-800 dark:text-gray-200 mb-2">
+                <div className="bg-gray-700 dark:bg-gray-700 p-4 rounded-lg">
+                  <h3 className="font-semibold text-gray-200 dark:text-gray-200 mb-2">
                     Category
                   </h3>
-                  <p className="text-gray-600 dark:text-gray-400">
+                  <p className="text-gray-400 dark:text-gray-400">
                     {coinInfoData?.category || "Cryptocurrency"}
                   </p>
                 </div>
 
-                <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
-                  <h3 className="font-semibold text-gray-800 dark:text-gray-200 mb-2">
+                <div className="bg-gray-700 dark:bg-gray-700 p-4 rounded-lg">
+                  <h3 className="font-semibold text-gray-200 dark:text-gray-200 mb-2">
                     Launch Date
                   </h3>
-                  <p className="text-gray-600 dark:text-gray-400">
+                  <p className="text-gray-400 dark:text-gray-400">
                     {coinInfoData?.date_added
                       ? new Date(coinInfoData.date_added).toLocaleDateString()
                       : "Not available"}
@@ -197,8 +187,8 @@ const CoinDetailPage = () => {
                 </div>
 
                 {coinInfoData?.tags && coinInfoData.tags.length > 0 && (
-                  <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg sm:col-span-2">
-                    <h3 className="font-semibold text-gray-800 dark:text-gray-200 mb-2">
+                  <div className="bg-gray-700 dark:bg-gray-700 p-4 rounded-lg sm:col-span-2">
+                    <h3 className="font-semibold text-gray-200 dark:text-gray-200 mb-2">
                       Tags
                     </h3>
                     <div className="flex flex-wrap gap-2">
@@ -207,7 +197,7 @@ const CoinDetailPage = () => {
                         .map((tag: string, index: number) => (
                           <span
                             key={index}
-                            className="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-sm"
+                            className="px-3 py-1 bg-blue-900 dark:bg-blue-900 text-blue-200 dark:text-blue-200 rounded-full text-sm"
                           >
                             {tag}
                           </span>
@@ -222,32 +212,32 @@ const CoinDetailPage = () => {
 
         {/* Technical Details */}
         <div>
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+          <div className="bg-gray-800 dark:bg-gray-800 rounded-lg shadow-md p-6">
             <h2 className="text-2xl font-semibold mb-4">Technical Details</h2>
             <div className="space-y-4">
-              <div className="border-b dark:border-gray-700 pb-3">
-                <h3 className="font-semibold text-gray-800 dark:text-gray-200">
+              <div className="border-b border-gray-700 dark:border-gray-700 pb-3">
+                <h3 className="font-semibold text-gray-200 dark:text-gray-200">
                   Symbol
                 </h3>
-                <p className="text-gray-600 dark:text-gray-400">
+                <p className="text-gray-400 dark:text-gray-400">
                   {coinInfoData?.symbol}
                 </p>
               </div>
 
-              <div className="border-b dark:border-gray-700 pb-3">
-                <h3 className="font-semibold text-gray-800 dark:text-gray-200">
+              <div className="border-b border-gray-700 dark:border-gray-700 pb-3">
+                <h3 className="font-semibold text-gray-200 dark:text-gray-200">
                   Rank
                 </h3>
-                <p className="text-gray-600 dark:text-gray-400">
+                <p className="text-gray-400 dark:text-gray-400">
                   #{coinPriceData?.cmc_rank || "N/A"}
                 </p>
               </div>
 
-              <div className="border-b dark:border-gray-700 pb-3">
-                <h3 className="font-semibold text-gray-800 dark:text-gray-200">
+              <div className="border-b border-gray-700 dark:border-gray-700 pb-3">
+                <h3 className="font-semibold text-gray-200 dark:text-gray-200">
                   Max Supply
                 </h3>
-                <p className="text-gray-600 dark:text-gray-400">
+                <p className="text-gray-400 dark:text-gray-400">
                   {coinPriceData?.max_supply
                     ? coinPriceData.max_supply.toLocaleString() +
                       " " +
@@ -256,11 +246,11 @@ const CoinDetailPage = () => {
                 </p>
               </div>
 
-              <div className="border-b dark:border-gray-700 pb-3">
-                <h3 className="font-semibold text-gray-800 dark:text-gray-200">
+              <div className="border-b border-gray-700 dark:border-gray-700 pb-3">
+                <h3 className="font-semibold text-gray-200 dark:text-gray-200">
                   Total Supply
                 </h3>
-                <p className="text-gray-600 dark:text-gray-400">
+                <p className="text-gray-400 dark:text-gray-400">
                   {coinPriceData?.total_supply
                     ? coinPriceData.total_supply.toLocaleString() +
                       " " +
@@ -269,11 +259,11 @@ const CoinDetailPage = () => {
                 </p>
               </div>
 
-              <div className="border-b dark:border-gray-700 pb-3">
-                <h3 className="font-semibold text-gray-800 dark:text-gray-200">
+              <div className="border-b border-gray-700 dark:border-gray-700 pb-3">
+                <h3 className="font-semibold text-gray-200 dark:text-gray-200">
                   Last Updated
                 </h3>
-                <p className="text-gray-600 dark:text-gray-400">
+                <p className="text-gray-400 dark:text-gray-400">
                   {coinPriceData?.last_updated
                     ? new Date(coinPriceData.last_updated).toLocaleString()
                     : "N/A"}
@@ -285,11 +275,11 @@ const CoinDetailPage = () => {
       </div>
 
       {/* Price Statistics */}
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6">
+      <div className="bg-gray-800 dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6">
         <h2 className="text-2xl font-semibold mb-4">Price Statistics</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="text-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-            <h3 className="font-semibold text-gray-800 dark:text-gray-200 mb-2">
+          <div className="text-center p-4 bg-gray-700 dark:bg-gray-700 rounded-lg">
+            <h3 className="font-semibold text-gray-200 dark:text-gray-200 mb-2">
               1 Hour
             </h3>
             <p
@@ -299,12 +289,14 @@ const CoinDetailPage = () => {
                   : "text-red-500"
               }`}
             >
-              {coinPriceData?.quote?.USD?.percent_change_1h?.toFixed(2) || "0.00"}%
+              {coinPriceData?.quote?.USD?.percent_change_1h?.toFixed(2) ||
+                "0.00"}
+              %
             </p>
           </div>
 
-          <div className="text-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-            <h3 className="font-semibold text-gray-800 dark:text-gray-200 mb-2">
+          <div className="text-center p-4 bg-gray-700 dark:bg-gray-700 rounded-lg">
+            <h3 className="font-semibold text-gray-200 dark:text-gray-200 mb-2">
               7 Days
             </h3>
             <p
@@ -314,12 +306,14 @@ const CoinDetailPage = () => {
                   : "text-red-500"
               }`}
             >
-              {coinPriceData?.quote?.USD?.percent_change_7d?.toFixed(2) || "0.00"}%
+              {coinPriceData?.quote?.USD?.percent_change_7d?.toFixed(2) ||
+                "0.00"}
+              %
             </p>
           </div>
 
-          <div className="text-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-            <h3 className="font-semibold text-gray-800 dark:text-gray-200 mb-2">
+          <div className="text-center p-4 bg-gray-700 dark:bg-gray-700 rounded-lg">
+            <h3 className="font-semibold text-gray-200 dark:text-gray-200 mb-2">
               30 Days
             </h3>
             <p
@@ -329,16 +323,20 @@ const CoinDetailPage = () => {
                   : "text-red-500"
               }`}
             >
-              {coinPriceData?.quote?.USD?.percent_change_30d?.toFixed(2) || "0.00"}%
+              {coinPriceData?.quote?.USD?.percent_change_30d?.toFixed(2) ||
+                "0.00"}
+              %
             </p>
           </div>
 
-          <div className="text-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-            <h3 className="font-semibold text-gray-800 dark:text-gray-200 mb-2">
+          <div className="text-center p-4 bg-gray-700 dark:bg-gray-700 rounded-lg">
+            <h3 className="font-semibold text-gray-200 dark:text-gray-200 mb-2">
               Market Cap Dominance
             </h3>
             <p className="text-lg font-bold text-blue-500">
-              {coinPriceData?.quote?.USD?.market_cap_dominance?.toFixed(2) || "0.00"}%
+              {coinPriceData?.quote?.USD?.market_cap_dominance?.toFixed(2) ||
+                "0.00"}
+              %
             </p>
           </div>
         </div>
@@ -346,71 +344,74 @@ const CoinDetailPage = () => {
 
       {/* Links Section */}
       {coinInfoData?.urls && (
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+        <div className="bg-gray-800 dark:bg-gray-800 rounded-lg shadow-md p-6">
           <h2 className="text-2xl font-semibold mb-4">Links & Resources</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {coinInfoData.urls.website && coinInfoData.urls.website.length > 0 && (
-              <div>
-                <h3 className="font-semibold text-gray-800 dark:text-gray-200 mb-2">
-                  Website
-                </h3>
-                {coinInfoData.urls.website
-                  .slice(0, 2)
-                  .map((url: string, index: number) => (
-                    <a
-                      key={index}
-                      href={url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="block text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 mb-1"
-                    >
-                      {url.replace(/^https?:\/\//, "")}
-                    </a>
-                  ))}
-              </div>
-            )}
+            {coinInfoData.urls.website &&
+              coinInfoData.urls.website.length > 0 && (
+                <div>
+                  <h3 className="font-semibold text-gray-200 dark:text-gray-200 mb-2">
+                    Website
+                  </h3>
+                  {coinInfoData.urls.website
+                    .slice(0, 2)
+                    .map((url: string, index: number) => (
+                      <a
+                        key={index}
+                        href={url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="block text-blue-400 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-500 mb-1"
+                      >
+                        {url.replace(/^https?:\/\//, "")}
+                      </a>
+                    ))}
+                </div>
+              )}
 
-            {coinInfoData.urls.explorer && coinInfoData.urls.explorer.length > 0 && (
-              <div>
-                <h3 className="font-semibold text-gray-800 dark:text-gray-200 mb-2">
-                  Explorers
-                </h3>
-                {coinInfoData.urls.explorer
-                  .slice(0, 2)
-                  .map((url: string, index: number) => (
-                    <a
-                      key={index}
-                      href={url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="block text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 mb-1"
-                    >
-                      {url.replace(/^https?:\/\//, "")}
-                    </a>
-                  ))}
-              </div>
-            )}
+            {coinInfoData.urls.explorer &&
+              coinInfoData.urls.explorer.length > 0 && (
+                <div>
+                  <h3 className="font-semibold text-gray-200 dark:text-gray-200 mb-2">
+                    Explorers
+                  </h3>
+                  {coinInfoData.urls.explorer
+                    .slice(0, 2)
+                    .map((url: string, index: number) => (
+                      <a
+                        key={index}
+                        href={url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="block text-blue-400 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-500 mb-1"
+                      >
+                        {url.replace(/^https?:\/\//, "")}
+                      </a>
+                    ))}
+                </div>
+              )}
 
-            {coinInfoData.urls.source_code && coinInfoData.urls.source_code.length > 0 && (
-              <div>
-                <h3 className="font-semibold text-gray-800 dark:text-gray-200 mb-2">
-                  Source Code
-                </h3>
-                {coinInfoData.urls.source_code
-                  .slice(0, 2)
-                  .map((url: string, index: number) => (
-                    <a
-                      key={index}
-                      href={url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="block text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 mb-1"
-                    >
-                      {url.replace(/^https?:\/\//, "")}
-                    </a>
-                  ))}
-              </div>
-            )}
+            {coinInfoData.urls.source_code &&
+              coinInfoData.urls.source_code.length > 0 && (
+                <div>
+                  <h3 className="font-semibold text-gray-200 dark:text-gray-200 mb-2">
+                    Source Code
+                  </h3>
+                  {coinInfoData.urls.source_code
+                    .slice(0, 2)
+                    .map((url: string, index: number) => (
+                      <a
+                        key={index}
+                        href={url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="block text-blue-400 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-500 mb-1"
+                      >
+                        {url.replace(/^https?:\/\//, "")}
+                      </a>
+                    ))}
+                </div>
+              )}
           </div>
         </div>
       )}
