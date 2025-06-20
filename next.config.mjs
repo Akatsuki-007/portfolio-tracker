@@ -7,6 +7,7 @@ const nextConfig = {
       "images.unsplash.com",
       "www.gstatic.com",
       "lh3.googleusercontent.com",
+      "s2.coinmarketcap.com",
     ],
   },
   env: {
